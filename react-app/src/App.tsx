@@ -9,13 +9,13 @@ import AgentModal from './components/AgentModal'
 import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
-import { agentsData } from './data/agentData'
+import { syncedAgentsData } from './data/agentData'
 import type { Agent, FilterOptions, Review } from './types'
 
 function App() {
   // State for agents and filtered agents
-  const [agents, setAgents] = useState<Agent[]>(agentsData)
-  const [filteredAgents, setFilteredAgents] = useState<Agent[]>(agentsData)
+  const [agents, setAgents] = useState<Agent[]>(syncedAgentsData)
+  const [filteredAgents, setFilteredAgents] = useState<Agent[]>(syncedAgentsData)
   const [displayedAgents, setDisplayedAgents] = useState<Agent[]>([])
   
   // State for search and filters
@@ -130,7 +130,7 @@ function App() {
           return { 
             ...agent, 
             reviewsList,
-            comments: agent.comments + 1,
+            comments: reviewsList.length, // Set comments to actual number of reviews
             rating: calculateNewRating(reviewsList)
           };
         }
@@ -144,7 +144,7 @@ function App() {
       setSelectedAgent({
         ...selectedAgent,
         reviewsList,
-        comments: selectedAgent.comments + 1,
+        comments: reviewsList.length, // Set comments to actual number of reviews
         rating: calculateNewRating(reviewsList)
       });
     }

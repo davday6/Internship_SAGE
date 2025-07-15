@@ -16,8 +16,11 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
     ? (agents.reduce((acc, agent) => acc + agent.rating, 0) / agents.length).toFixed(1) 
     : "0.0";
   
-  // Count total reviews
-  const totalReviews = agents.reduce((acc, agent) => acc + agent.comments, 0);
+  // Count total reviews based on reviewsList length
+  const totalReviews = agents.reduce((acc, agent) => {
+    // If reviewsList exists, use its length, otherwise fall back to comments property
+    return acc + (agent.reviewsList ? agent.reviewsList.length : agent.comments);
+  }, 0);
   
   // Fixed number for capabilities (as in original HTML)
   const capabilityCount = 12;

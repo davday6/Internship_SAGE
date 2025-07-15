@@ -53,7 +53,7 @@ export const agentsData: Agent[] = [
     subdomain: "Software Development / DevOps",
     description: "An AI assistant specialized in helping developers with code completion, bug fixing, and code reviews. Supports multiple programming languages including JavaScript, Python, and Java.",
     rating: 4.8,
-    comments: 45,
+    comments: 2, // Updated to match actual number of reviews
     trial: true,
     reviewsList: [
       {
@@ -77,7 +77,7 @@ export const agentsData: Agent[] = [
     subdomain: "Healthcare",
     description: "Specialized AI for healthcare data analysis, patient record management, and medical research assistance. HIPAA compliant and trained on validated medical datasets.",
     rating: 4.5,
-    comments: 32,
+    comments: 2, // Updated to match actual number of reviews
     trial: false,
     reviewsList: [
       {
@@ -101,7 +101,7 @@ export const agentsData: Agent[] = [
     subdomain: "Data Analytics & Business Intelligence",
     description: "AI-powered data visualization tool that automatically creates insightful charts and dashboards from raw data. Supports multiple data sources and export formats.",
     rating: 4.2,
-    comments: 28,
+    comments: 1, // Updated to match actual number of reviews
     trial: true,
     reviewsList: [
       {
@@ -119,7 +119,7 @@ export const agentsData: Agent[] = [
     subdomain: "Testing",
     description: "AI agent that automatically generates comprehensive test cases, performs regression testing, and identifies potential vulnerabilities in your code.",
     rating: 4.6,
-    comments: 37,
+    comments: 1, // Updated to match actual number of reviews
     trial: false,
     reviewsList: [
       {
@@ -137,7 +137,7 @@ export const agentsData: Agent[] = [
     subdomain: "AI Safety & Security",
     description: "A specialized agent for monitoring and ensuring the ethical and safe operation of other AI systems. Provides risk assessments and mitigation strategies.",
     rating: 4.9,
-    comments: 41,
+    comments: 1, // Updated to match actual number of reviews
     trial: true,
     reviewsList: [
       {
@@ -155,7 +155,7 @@ export const agentsData: Agent[] = [
     subdomain: "HR",
     description: "AI-powered HR assistant for employee onboarding, performance review analysis, and HR policy compliance. Integrates with popular HRIS systems.",
     rating: 4.3,
-    comments: 23,
+    comments: 1, // Updated to match actual number of reviews
     trial: false,
     reviewsList: [
       {
@@ -163,6 +163,25 @@ export const agentsData: Agent[] = [
         date: "2025-06-02",
         rating: 4,
         comment: "Streamlines our HR processes effectively. Could use better customization for company-specific policies."
+      }
+    ]
+  },
+  // Example of a new agent added to the platform
+  {
+    id: "7",
+    title: "Market Analysis AI",
+    domain: "Business Services",
+    subdomain: "Financial Services",
+    description: "AI that provides market analysis and financial insights based on real-time data and historical trends. Helps with investment decisions and market forecasting.",
+    rating: 4.0,
+    comments: 1, // Matches the length of reviewsList
+    trial: true,
+    reviewsList: [
+      {
+        author: "Financial Analyst",
+        date: "2025-07-15",
+        rating: 4,
+        comment: "Very useful for quick market insights. Saved me hours of research."
       }
     ]
   }
@@ -177,3 +196,14 @@ export function findL1ForDomain(domain: string): string {
   }
   return "Other";
 }
+
+// Synchronize comments with actual reviewsList length
+export function syncAgentComments(agents: Agent[]): Agent[] {
+  return agents.map(agent => ({
+    ...agent,
+    comments: agent.reviewsList ? agent.reviewsList.length : 0
+  }));
+}
+
+// Initial synchronization to ensure consistency
+export const syncedAgentsData = syncAgentComments(agentsData);
