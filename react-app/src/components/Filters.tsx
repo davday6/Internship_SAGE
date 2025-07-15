@@ -1,15 +1,13 @@
 import React from 'react';
 import { businessCapabilities } from '../data/agentData';
-import type { FilterOptions, ViewMode } from '../types';
+import type { FilterOptions } from '../types';
 
 interface FiltersProps {
   filters: FilterOptions;
   onFilterChange: (newFilters: Partial<FilterOptions>) => void;
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange, viewMode, setViewMode }) => {
+const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange }) => {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     onFilterChange({ [name]: value });
@@ -83,11 +81,13 @@ const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange, viewMode, se
         </div>
 
         <div className="filter-group">
-          <label htmlFor="rating">Rating</label>
+          <label htmlFor="rating">Minimum Rating</label>
           <select id="rating" name="rating" value={filters.rating} onChange={handleFilterChange}>
-            <option value="all">All Ratings</option>
+            <option value="all">Any Rating</option>
+            <option value="1">1+ Stars</option>
+            <option value="2">2+ Stars</option>
+            <option value="3">3+ Stars</option>
             <option value="4">4+ Stars</option>
-            <option value="4.5">4.5+ Stars</option>
           </select>
         </div>
 
@@ -98,24 +98,6 @@ const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange, viewMode, se
             <option value="comments">Most Reviewed</option>
             <option value="title">Name (A-Z)</option>
           </select>
-        </div>
-
-        <div className="filter-group">
-          <label>View</label>
-          <div className="view-toggle">
-            <button 
-              className={viewMode === 'grid' ? 'active' : ''} 
-              onClick={() => setViewMode('grid')}
-            >
-              Grid
-            </button>
-            <button 
-              className={viewMode === 'list' ? 'active' : ''} 
-              onClick={() => setViewMode('list')}
-            >
-              List
-            </button>
-          </div>
         </div>
       </div>
     </div>

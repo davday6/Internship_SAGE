@@ -33,5 +33,3 @@ export type FilterOptions = {
   rating: string;
   sortBy: string;
 };
-
-export type ViewMode = 'grid' | 'list';

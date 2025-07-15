@@ -1,38 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(searchQuery);
-  };
-
+const Header: React.FC<HeaderProps> = () => {
   return (
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <img src="/sage-logo-020.png" alt="SAGE - Sogeti Agent Exchange" />
-          Sogeti Agent Exchange
+          <div className="logo-text">
+            <span className="logo-title">SAGE</span>
+            <span>Sogeti Agent Exchange</span>
+          </div>
         </div>
-        <form className="search-bar" onSubmit={handleSearchSubmit}>
-          <input 
-            type="text" 
-            id="search-input" 
-            placeholder="Search for agents..." 
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <button id="search-button" type="submit">🔍</button>
-        </form>
       </div>
     </header>
   );

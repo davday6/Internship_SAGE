@@ -1,13 +1,15 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
 import Header from './components/Header'
+import Hero from './components/Hero'
 import Stats from './components/Stats'
 import Filters from './components/Filters'
 import AgentCard from './components/AgentCard'
 import AgentModal from './components/AgentModal'
 import Pagination from './components/Pagination'
+import ContactForm from './components/ContactForm'
 import { agentsData } from './data/agentData'
-import type { Agent, FilterOptions, ViewMode, Review } from './types'
+import type { Agent, FilterOptions, Review } from './types'
 
 function App() {
   // State for agents and filtered agents
@@ -32,7 +34,6 @@ function App() {
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(6)
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
   
   // Filter agents based on search query and filters
   useEffect(() => {
@@ -157,6 +158,7 @@ function App() {
   return (
     <>
       <Header onSearch={handleSearch} />
+      <Hero onSearch={handleSearch} />
       
       <main className="main">
         <Stats agents={filteredAgents} />
@@ -164,11 +166,9 @@ function App() {
         <Filters 
           filters={filters} 
           onFilterChange={handleFilterChange} 
-          viewMode={viewMode} 
-          setViewMode={setViewMode} 
         />
         
-        <div className={`agents-container ${viewMode === 'list' ? 'list-view' : ''}`}>
+        <div className="agents-container">
           {displayedAgents.length > 0 ? (
             displayedAgents.map(agent => (
               <AgentCard 
@@ -192,6 +192,8 @@ function App() {
           />
         )}
       </main>
+      
+      <ContactForm />
       
       <AgentModal 
         agent={selectedAgent}

@@ -24,23 +24,23 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
 
   return (
     <div className="stats-container">
-      <div className="stat-item">
+      <div className="stat-item stat-item-agents">
         <div className="stat-value" id="total-agents">{totalAgents}</div>
         <div className="stat-label">Agents</div>
       </div>
-      <div className="stat-item">
+      <div className="stat-item stat-item-domains">
         <div className="stat-value" id="total-domains">{uniqueDomains}</div>
         <div className="stat-label">Domains</div>
       </div>
-      <div className="stat-item">
+      <div className="stat-item stat-item-rating">
         <div className="stat-value" id="avg-rating">{avgRating}</div>
         <div className="stat-label">Avg Rating</div>
       </div>
-      <div className="stat-item">
+      <div className="stat-item stat-item-reviews">
         <div className="stat-value" id="total-reviews">{totalReviews}</div>
         <div className="stat-label">Reviews</div>
       </div>
-      <div className="stat-item">
+      <div className="stat-item stat-item-capabilities">
         <div className="stat-value" id="capability-count">{capabilityCount}</div>
         <div className="stat-label">Capabilities</div>
       </div>

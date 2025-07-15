@@ -84,36 +84,18 @@ button:focus-visible {
   .agents-container {
     grid-template-columns: 1fr;
   }
-  
-  .list-view .agent-card {
-    flex-direction: column;
-  }
-  
-  .list-view .agent-header,
-  .list-view .agent-body,
-  .list-view .agent-footer {
-    width: 100%;
-    border: none;
-  }
-  
-  .list-view .agent-header {
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .list-view .agent-footer {
-    border-top: 1px solid var(--border-color);
-  }
+  /* Only grid view is used */
 
   .stats-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    gap: 0.75rem;
   }
   
   .stat-item {
-    border-right: none;
-    margin-bottom: 0.5rem;
-    flex: 1 0 40%;
-    justify-content: center;
+    min-width: 100px;
+    padding: 0.75rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
   }
 }
