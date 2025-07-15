@@ -8,6 +8,7 @@ import AgentCard from './components/AgentCard'
 import AgentModal from './components/AgentModal'
 import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
+import ChatWidget from './components/ChatWidget'
 import { agentsData } from './data/agentData'
 import type { Agent, FilterOptions, Review } from './types'
 
@@ -201,6 +202,8 @@ function App() {
         onClose={() => setIsModalOpen(false)}
         onAddReview={handleAddReview}
       />
+      
+      <ChatWidget />
     </>
   )
 }
