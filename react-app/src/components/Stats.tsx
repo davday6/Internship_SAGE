@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Agent } from '../types';
-import { businessCapabilities } from '../data/agentData';
 
 interface StatsProps {
   agents: Agent[];
@@ -23,11 +22,18 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
     return acc + (agent.reviewsList ? agent.reviewsList.length : agent.comments);
   }, 0);
   
-  // Count total subcapabilities from businessCapabilities
-  const capabilityCount = Object.values(businessCapabilities).reduce(
-    (total, capability) => total + capability.subCapabilities.length,
-    0
-  );
+  // Count unique subcapabilities that appear in the filtered agents
+  const uniqueCapabilities = new Set<string>();
+  
+  // For each agent, add its subdomain to the set of unique capabilities
+  agents.forEach(agent => {
+    if (agent.subdomain) {
+      uniqueCapabilities.add(agent.subdomain);
+    }
+  });
+  
+  // Count of unique capabilities in the currently filtered agents
+  const capabilityCount = uniqueCapabilities.size;
 
   return (
     <div className="stats-container">
