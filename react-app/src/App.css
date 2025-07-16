@@ -170,9 +170,10 @@
 .stats-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 1.75rem;  /* Increased from 1rem to 1.75rem for more space between stats */
+  margin-bottom: 2rem;  /* Increased bottom margin */
   justify-content: center;
+  padding: 0.75rem;  /* Added padding around the container */
 }
 
 .stat-item {
@@ -180,12 +181,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1.5rem;  /* Increased from 1.25rem to 1.5rem */
   border-radius: 12px;
-  min-width: 120px;
+  min-width: 180px;  /* Increased from 120px to 180px */
   box-shadow: var(--box-shadow);
   transition: transform 0.2s ease;
   text-align: center;
+  margin: 0 0.5rem;  /* Added horizontal margin */
 }
 
 .stat-item:hover {
@@ -216,16 +218,51 @@
 }
 
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 2rem;  /* Increased from 1.75rem to 2rem */
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;  /* Increased from 0.5rem to 0.75rem */
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;  /* Increased from 0.85rem */
   font-weight: 500;
-  font-size: 0.85rem;
   white-space: nowrap;
+  letter-spacing: 0.02em;  /* Added letter spacing for better readability */
+}
+
+/* Add responsive styles for stats container */
+@media (max-width: 768px) {
+  .stats-container {
+    gap: 1.25rem;
+    padding: 0.5rem;
+  }
+  
+  .stat-item {
+    min-width: 120px;
+    padding: 1.25rem 1rem;
+    margin: 0 0.25rem;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    gap: 1rem;
+  }
+  
+  .stat-item {
+    flex-basis: calc(50% - 1rem);
+    min-width: 110px;
+    margin-bottom: 0.5rem;
+  }
 }
 
 /* Filter Container */
