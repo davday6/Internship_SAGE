@@ -9,6 +9,7 @@ import AgentModal from './components/AgentModal'
 import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
+import ViewToggle from './components/ViewToggle'
 import { syncedAgentsData } from './data/agentData'
 import type { Agent, FilterOptions, Review } from './types'
 
@@ -35,6 +36,9 @@ function App() {
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(6)
+  
+  // State for view type (grid or list)
+  const [viewType, setViewType] = useState<'grid' | 'list'>('grid')
   
   // Filter agents based on search query and filters
   useEffect(() => {
@@ -169,7 +173,14 @@ function App() {
           onFilterChange={handleFilterChange} 
         />
         
-        <div className="agents-container">
+        <div className="filters-view-controls">
+          <ViewToggle 
+            viewType={viewType}
+            onToggle={setViewType}
+          />
+        </div>
+        
+        <div className={`agents-container ${viewType}-view`}>
           {displayedAgents.length > 0 ? (
             displayedAgents.map(agent => (
               <AgentCard 

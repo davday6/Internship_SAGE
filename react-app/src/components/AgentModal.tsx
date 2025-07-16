@@ -16,7 +16,11 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
   if (!agent) return null;
 
   const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('en-US', {
+    // Create date with explicit timezone handling to prevent date shifting
+    const [year, month, day] = date.split('-').map(num => parseInt(num));
+    const dateObj = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript Date
+    
+    return dateObj.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -31,9 +35,15 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
       return;
     }
 
+    // Create a date in local timezone
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+    
     const newReview: Review = {
       author: name,
-      date: new Date().toISOString().split('T')[0], // Format: YYYY-MM-DD
+      date: `${year}-${month}-${day}`, // Format: YYYY-MM-DD in local timezone
       rating: rating,
       comment: comment
     };

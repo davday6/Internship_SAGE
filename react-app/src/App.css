@@ -307,6 +307,7 @@
 }
 
 /* Agents Container */
+/* Default agents container (for backwards compatibility) */
 .agents-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1050,10 +1051,96 @@
   justify-content: center;
 }
 
-@media (max-width: 480px) {
-  .chat-interface {
-    width: 300px;
-    height: 450px;
-    right: 0;
+/* View Toggle Styles */
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.view-toggle-button {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.view-toggle-button.active {
+  background-color: var(--sogeti-blue);
+  color: white;
+  border-color: var(--sogeti-blue);
+}
+
+.view-toggle-button:hover:not(.active) {
+  background-color: #f0f0f0;
+}
+
+/* Filters and View Controls Container */
+.filters-view-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Grid View (Default) */
+.agents-container.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* List View */
+.agents-container.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.agents-container.list-view .agent-card {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
+}
+
+.agents-container.list-view .agent-header {
+  padding: 0.75rem 1rem;
+}
+
+.agents-container.list-view .agent-body {
+  border-right: 1px solid var(--border-color);
+}
+
+.agents-container.list-view .agent-footer {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  padding: 1rem;
+  background-color: transparent;
+  border-top: none;
+  gap: 0.5rem;
+}
+
+/* Responsive adjustments for list view */
+@media (max-width: 768px) {
+  .agents-container.list-view .agent-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .agents-container.list-view .agent-footer {
+    grid-column: 1;
+    grid-row: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
   }
 }
