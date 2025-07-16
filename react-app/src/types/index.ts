@@ -7,6 +7,7 @@ export interface Agent {
   rating: number;
   comments: number;
   trial: boolean;
+  trialUrl?: string; // URL to access the trial
   reviewsList?: Review[];
 }
 

@@ -492,8 +492,36 @@
   border-radius: 4px;
 }
 
+/* Trial button styles */
+.trial-button {
+  display: block;
+  margin: 1rem 0 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #b6d7f8; /* Light blue as requested */
+  color: var(--sogeti-blue);
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 2px solid #b6d7f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trial-button:hover {
+  background-color: #a1c9f5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.trial-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .modal-description {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   line-height: 1.8;
 }
 
@@ -536,7 +564,10 @@
   padding: 1rem 2rem;
   background-color: #fafafa;
   border-top: 1px solid var(--border-color);
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
 }
 
 .contact-btn {
@@ -546,6 +577,67 @@
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contact-btn:hover {
+  background-color: #004a9f;
+  transform: translateY(-2px);
+}
+
+/* Trial Button Styles */
+.trial-btn {
+  display: flex;
+  align-items: center;
+  background-color: var(--success);
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.trial-btn:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: left 0.7s ease;
+}
+
+.trial-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: #1e8e3e;
+}
+
+.trial-btn:hover:before {
+  left: 100%;
+}
+
+.trial-btn:active {
+  transform: translateY(-1px);
+}
+
+.trial-btn-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.trial-btn-text {
   font-weight: 600;
 }
 

@@ -55,6 +55,7 @@ export const agentsData: Agent[] = [
     rating: 4.8,
     comments: 2, // Updated to match actual number of reviews
     trial: true,
+    trialUrl: "https://trial.devassistant.ai/register",
     reviewsList: [
       {
         author: "John Dev",
@@ -103,6 +104,7 @@ export const agentsData: Agent[] = [
     rating: 4.2,
     comments: 1, // Updated to match actual number of reviews
     trial: true,
+    trialUrl: "https://datavizmaster.io/trial",
     reviewsList: [
       {
         author: "Data Analyst",
@@ -139,6 +141,7 @@ export const agentsData: Agent[] = [
     rating: 4.9,
     comments: 1, // Updated to match actual number of reviews
     trial: true,
+    trialUrl: "https://ai-safety-guard.dev/try",
     reviewsList: [
       {
         author: "AI Ethics Officer",
@@ -176,6 +179,26 @@ export const agentsData: Agent[] = [
     rating: 4.0,
     comments: 1, // Matches the length of reviewsList
     trial: true,
+    trialUrl: "https://market-analysis-ai.com/free-trial",
+    reviewsList: [
+      {
+        author: "Financial Analyst",
+        date: "2025-07-15",
+        rating: 4,
+        comment: "Very useful for quick market insights. Saved me hours of research."
+      }
+    ]
+  },
+  {
+    id: "8",
+    title: "Market Research Bot",
+    domain: "Business Services",
+    subdomain: "Financial Services",
+    description: "AI that provides market research and competitive analysis based on real-time data and historical trends. Helps with investment decisions and market forecasting.",
+    rating: 4.0,
+    comments: 1, // Matches the length of reviewsList
+    trial: true,
+    trialUrl: "https://market-research-bot.com/free-trial",
     reviewsList: [
       {
         author: "Financial Analyst",

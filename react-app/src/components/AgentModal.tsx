@@ -81,6 +81,17 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           
           <div className="modal-description">{agent.description}</div>
           
+          {agent.trial && agent.trialUrl && (
+            <a 
+              href={agent.trialUrl} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="trial-button"
+            >
+              Try {agent.title} Now
+            </a>
+          )}
+          
           <div className="modal-section">
             <h3 className="modal-section-title">Reviews</h3>
             

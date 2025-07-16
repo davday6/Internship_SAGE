@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Agent } from '../types';
+import { businessCapabilities } from '../data/agentData';
 
 interface StatsProps {
   agents: Agent[];
@@ -22,8 +23,11 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
     return acc + (agent.reviewsList ? agent.reviewsList.length : agent.comments);
   }, 0);
   
-  // Fixed number for capabilities (as in original HTML)
-  const capabilityCount = 12;
+  // Count total subcapabilities from businessCapabilities
+  const capabilityCount = Object.values(businessCapabilities).reduce(
+    (total, capability) => total + capability.subCapabilities.length,
+    0
+  );
 
   return (
     <div className="stats-container">

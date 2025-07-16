@@ -23,6 +23,7 @@ const handleAddAgent = () => {
     description: "AI that provides market analysis and financial insights based on real-time data.",
     rating: 4.0,
     trial: true,
+    trialUrl: "https://market-analysis.ai/trial", // URL for the trial website (required if trial is true)
     reviewsList: [
       {
         author: "Financial Analyst",
@@ -47,6 +48,7 @@ You can also directly add a new agent by editing the `agentData.ts` file:
 2. Ensure your agent has a unique ID
 3. Make sure the `comments` property matches the length of the `reviewsList` array
 4. If the domain doesn't exist yet, add it to the `businessCapabilities` object
+5. Include a `trialUrl` property if `trial` is set to `true`
 
 Example:
 
@@ -63,6 +65,7 @@ export const agentsData: Agent[] = [
     rating: 4.0,
     comments: 1, // Should match the length of reviewsList
     trial: true,
+    trialUrl: "https://market-analysis.ai/trial", // URL for the trial website
     reviewsList: [
       {
         author: "Financial Analyst",

@@ -9,7 +9,7 @@ import { syncAgentComments } from '../data/agentData';
  * @returns A new array of agents with the new agent added
  */
 export function addNewAgent(
-  agent: Partial<Agent> & { title: string; domain: string }, 
+  agent: Partial<Agent> & { title: string; domain: string; trialUrl?: string }, 
   currentAgents: Agent[]
 ): Agent[] {
   // Generate a unique ID
@@ -25,6 +25,7 @@ export function addNewAgent(
     rating: agent.rating || 0,
     comments: agent.reviewsList ? agent.reviewsList.length : 0,
     trial: agent.trial !== undefined ? agent.trial : false,
+    trialUrl: agent.trialUrl, // Include trial URL if provided
     reviewsList: agent.reviewsList || []
   };
   
