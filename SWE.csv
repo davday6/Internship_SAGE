@@ -1,0 +1,37 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5
+,,,,,
+,,,,,
+,,Table: Software Productivity Gains from Generative AI by Persona,,,
+,,Persona,Low Productivity Gain Band,High Productivity Gain Band,Rationale/References
+,,Developer (Software Engineer),0.2,1,- 
+,,,,,McKinsey Study (2023)
+,,,,,": Developers completed tasks like code documentation, writing new code, and refactoring up to twice as fast (100% productivity gain) with generative AI tools. Tasks included refactoring code into microservices and building new application functionality. Gains were highest for repetitive tasks but required human oversight for error checking and context. Less experienced developers saw higher gains (up to 100%) due to AI disseminating best practices."
+,,,,,- 
+,,,,,MIT Study (2023)
+,,,,,": GitHub Copilot increased productivity by ~20-55% for developers, particularly newer hires, by speeding up coding tasks. No significant gains for highly skilled developers."
+,,,,,- 
+,,,,,Uplevel Data Labs (2024)
+,,,,,": Found limited productivity gains with GitHub Copilot (no significant change in pull request cycle time or throughput), suggesting gains may be task-specific or require better tool training."
+,,,,,- 
+,,,,,Science (2023)
+,,,,,": ChatGPT enabled coding tasks to be completed up to twice as fast in some cases, though gains varied by task complexity."
+,,Business Analyst (BA),0.1,0.4,- 
+,,,,,MIT Sloan (2023)
+,,,,,": Generative AI improved performance by nearly 40% for tasks within AI’s capabilities (e.g., content generation, data analysis), but performance dropped by 19% for tasks outside AI’s strengths (e.g., strategic decision-making requiring nuanced judgment). BAs often handle requirements gathering and documentation, which align with AI’s text generation strengths, suggesting moderate gains."
+,,,,,- 
+,,,,,NN/g Study (2023)
+,,,,,": Across business tasks like writing documents, generative AI improved performance by 66% on average, with gains for less-skilled workers. BAs likely benefit similarly for tasks like drafting reports or user stories, but complex analysis may limit gains."
+,,,,,- 
+,,,,,Assumption
+,,,,,": Specific BA data is sparse; gains are inferred from studies on mid-level professionals performing writing and analytical tasks, adjusted lower due to BAs’ need for organizational context and stakeholder interaction, which AI struggles to replicate."
+,,Software Development Engineer in Test (SDET),0.1,0.35,- 
+,,,,,MIT Sloan (2023)
+,,,,,": Less-experienced contact center agents (comparable to junior SDETs) saw up to 35% productivity gains with AI assistants for repetitive tasks like query resolution. SDETs may see similar gains in test script generation or debugging, but complex test design requiring system understanding limits higher-end gains."
+,,,,,- 
+,,,,,McKinsey (2023)
+,,,,,": AI tools expedited repetitive tasks like code documentation, suggesting SDETs could benefit from automating test case generation or log analysis, with gains up to 30-35% for structured tasks."
+,,,,,- 
+,,,,,Assumption
+,,,,,": Limited SDET-specific data; gains are estimated based on developer and support agent studies, focusing on automation of repetitive testing tasks. AI’s error-prone outputs (e.g., Uplevel’s 41% increase in bugs with Copilot) suggest human oversight is critical, capping high-end gains."
+,,,,,
+,,Note,,,
