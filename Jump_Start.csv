@@ -1,4 +1,3 @@
-Jump Start Agents & Agentic Workflows Catalog,,,,,
 Agents/Agentic Workflow Name,Use Case Description,Agents / Tools Used,Domain,Customer,Link
 Agents Escalation Workflow,Customer service escalation system with AI agent handling returns/exchanges/refunds and human approval workflow for complex cases,"Workflow Orchestrator, Customer Service AI Agent, Human Escalation Workflow (Azure Logic App), End User Proxy, Approver Proxy",Customer Service / E-commerce,Retail/E-commerce Company,/agents/customer_service/agent_escalation.md
 AI Customer Support Agents,"Multi-agent telecommunications customer support system with specialized agents for sales, technical support, billing, and activation","Sales Agent, Technical Support Agent, Billing Agent, Activation Agent, User Agent, Planned Team, Telco Team",Telecommunications,Telecommunications Company,/agents/customer_service/customer_support.md
