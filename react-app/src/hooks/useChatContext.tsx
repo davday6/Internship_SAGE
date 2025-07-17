@@ -90,12 +90,22 @@ export const ChatProvider: React.FC<{children: React.ReactNode}> = ({ children }
       // This is where you would make API calls to your AI service
       
       // Simulate a delay for now
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const response = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userMessage })
+      });
+
+      const data = await response.json();
       
       // Example response (replace with real API call)
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        text: `This is a placeholder response. In the future, a real AI will respond to: "${text}"`,
+        text: data.response,
         sender: 'bot',
         timestamp: new Date(),
         status: 'sent'
