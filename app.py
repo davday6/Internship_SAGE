@@ -8,6 +8,8 @@ import dotenv
 import os
 import pandas as pd
 
+from strip_markdown import strip_markdown
+
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
 
@@ -15,12 +17,12 @@ dotenv.load_dotenv()
 
 csv_files = [
     #"Main.csv",
-    "Lab.csv",
-    "Jump_Start.csv",
-    "Life_and_Annuity.csv",
-    #"SAGE.csv",
-    #"Sandbox.csv",
-    #"SWE.csv"
+    "data/Lab.csv",
+    "data/Jump_Start.csv",
+    "data/Life_and_Annuity.csv",
+    #"data/SAGE.csv",
+    #"data/Sandbox.csv",
+    #"data/SWE.csv"
 ]
 
 csv_data = []
@@ -57,8 +59,8 @@ def retrieve_context(query, max_results=5):
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_message = data.get("message", "").lower()
-    
+    user_message = data['userMessage']['text'].lower()
+
     client = AzureOpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
@@ -111,8 +113,8 @@ def chat():
     #     response = "Goodbye! Have a great day!"
     # else:
     #     response = "I'm not sure how to respond to that. Try asking something else!"
-    
-    return jsonify({"response": answer})
+
+    return jsonify({"response": str(strip_markdown(answer))})
 
 if __name__ == "__main__":
     app.run(debug=True)
