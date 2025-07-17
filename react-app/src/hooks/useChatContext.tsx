@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import type { ChatMessage, ChatState, ChatContextProps } from '../types';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 // Initial chat state
 const initialState: ChatState = {
   messages: [
@@ -92,7 +94,7 @@ export const ChatProvider: React.FC<{children: React.ReactNode}> = ({ children }
       // Simulate a delay for now
       // await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const response = await fetch("http://localhost:5000/chat", {
+      const response = await fetch(`${backendUrl}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
