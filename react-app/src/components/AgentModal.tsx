@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Agent, Review } from '../types';
 import closeIcon from '../assets/close-icon.svg';
 
@@ -13,6 +13,15 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
   const [name, setName] = useState<string>('');
+
+  // Reset form when modal is closed
+  useEffect(() => {
+    if (!isOpen) {
+      setRating(0);
+      setComment('');
+      setName('');
+    }
+  }, [isOpen]);
 
   if (!agent) return null;
 
