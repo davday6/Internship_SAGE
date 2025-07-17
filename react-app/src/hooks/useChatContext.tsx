@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import type { ChatMessage, ChatState, ChatContextProps } from '../types';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 console.log('Backend URL:', backendUrl);
 
