@@ -12,11 +12,8 @@ csv_files = [
     "Main.csv",
     "Lab.csv",
     "Jump_Start.csv",
-    "Life_and_Annuity.csv",
-    "SAGE.csv",
-    "Sandbox.csv",
-    "SWE.csv"
-]
+    "Sandbox.csv"
+    ]   
 csv_data = []
 for file in csv_files:
     try:
@@ -30,17 +27,22 @@ rag_pipeline = pipeline("text-generation", model="distilgpt2")
 
 def retrieve_context(query, max_results=5):
     """
-    Simple keyword search across all CSVs. Returns up to max_results relevant rows as context.
+    Improved keyword search across all CSVs. Skips 'Unnamed' columns and empty values, deduplicates context rows.
     """
-    results = []
+    results = set()
     query_lower = query.lower()
     for df in csv_data:
-        for col in df.columns:
-            matches = df[df[col].str.lower().str.contains(query_lower, na=False)]
+        # Only use columns with meaningful names
+        valid_cols = [col for col in df.columns if not col.lower().startswith('unnamed')]
+        for col in valid_cols:
+            matches = df[df[col].str.contains(query_lower, case=False, na=False)]
             for _, row in matches.iterrows():
-                context_row = " | ".join([str(row[c]) for c in df.columns if str(row[c]).strip()])
-                if context_row:
-                    results.append(context_row)
+                # Only include non-empty, non-'Unnamed' columns
+                context_row = " | ".join([
+                    f"{c}: {row[c]}" for c in valid_cols if str(row[c]).strip() and not c.lower().startswith('unnamed')
+                ])
+                if context_row and context_row not in results:
+                    results.add(context_row)
                 if len(results) >= max_results:
                     break
             if len(results) >= max_results:
@@ -48,17 +50,25 @@ def retrieve_context(query, max_results=5):
         if len(results) >= max_results:
             break
     return "\n".join(results) if results else "No relevant context found."
+ 
+
 
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     user_message = data.get("message", "")
 
+    # System prompt for LLM
+    system_prompt = (
+        "You are a helpful assistant that helps navigate content of the website. "
+        "Use the context provided to aid in the queries posed.\n"
+    )
+
     # Retrieve context from CSVs
     context = retrieve_context(user_message)
 
     # Compose prompt for LLM
-    prompt = f"Context: {context}\nQuestion: {user_message}\nAnswer:"
+    prompt = f"{system_prompt}Context: {context}\nQuestion: {user_message}\nAnswer:"
     llm_response = rag_pipeline(prompt, max_length=500, num_return_sequences=1)[0]['generated_text']
 
     # Post-process response (strip prompt from output)
