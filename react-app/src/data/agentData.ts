@@ -54,6 +54,7 @@ export const agentsData: Agent[] = [
     description: "An AI assistant specialized in helping developers with code completion, bug fixing, and code reviews. Supports multiple programming languages including JavaScript, Python, and Java.",
     trial: true,
     trialUrl: "https://trial.devassistant.ai/register",
+    contactUrl: "https://devassistant.ai/contact",
     reviewsList: [
       {
         author: "John Dev",
@@ -76,6 +77,7 @@ export const agentsData: Agent[] = [
     subdomain: "Healthcare",
     description: "Specialized AI for healthcare data analysis, patient record management, and medical research assistance. HIPAA compliant and trained on validated medical datasets.",
     trial: false,
+    contactUrl: "https://healthtechanalyzer.com/support",
     reviewsList: [
       {
         author: "Dr. Smith",
@@ -99,6 +101,7 @@ export const agentsData: Agent[] = [
     description: "AI-powered data visualization tool that automatically creates insightful charts and dashboards from raw data. Supports multiple data sources and export formats.",
     trial: true,
     trialUrl: "https://datavizmaster.io/trial",
+    contactUrl: "https://datavizmaster.io/contact",
     reviewsList: [
       {
         author: "Data Analyst",

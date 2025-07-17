@@ -10,7 +10,7 @@ interface AgentModalProps {
 }
 
 const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddReview }) => {
-  const [rating, setRating] = useState<number>(5);
+  const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
   const [name, setName] = useState<string>('');
 
@@ -52,7 +52,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
     onAddReview(agent.id, newReview);
     setName('');
     setComment('');
-    setRating(5);
+    setRating(0);
   };
 
   // Generate star rating display
@@ -100,6 +100,12 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
               target="_blank" 
               rel="noopener noreferrer" 
               className="trial-button"
+              onClick={(e) => {
+                // Prevent the click from closing the modal
+                e.stopPropagation();
+                // Open in new tab using JavaScript to ensure it works
+                window.open(agent.trialUrl, '_blank', 'noopener,noreferrer');
+              }}
             >
               Try {agent.title} Now
             </a>
@@ -171,7 +177,24 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           </div>
         </div>
         <div className="modal-footer">
-          <button className="contact-btn">Contact Developer</button>
+          {agent.contactUrl ? (
+            <a 
+              href={agent.contactUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="contact-btn"
+              onClick={(e) => {
+                // Prevent the click from closing the modal
+                e.stopPropagation();
+                // Open in new tab using JavaScript to ensure it works
+                window.open(agent.contactUrl, '_blank', 'noopener,noreferrer');
+              }}
+            >
+              Contact Developer
+            </a>
+          ) : (
+            <button className="contact-btn" disabled>Contact Developer</button>
+          )}
         </div>
       </div>
     </div>

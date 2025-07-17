@@ -8,6 +8,7 @@ export interface Agent {
   comments?: number; // Made optional since it's calculated from reviews
   trial: boolean;
   trialUrl?: string; // URL to access the trial
+  contactUrl?: string; // URL to contact the developer
   reviewsList?: Review[];
 }
 
