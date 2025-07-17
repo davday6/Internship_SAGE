@@ -3,6 +3,8 @@ import type { ChatMessage, ChatState, ChatContextProps } from '../types';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL
 
+console.log('Backend URL:', backendUrl);
+
 // Initial chat state
 const initialState: ChatState = {
   messages: [
