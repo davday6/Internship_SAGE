@@ -4,3 +4,4 @@ pandas
 openai
 strip-markdown
 dotenv
+gunicorn
