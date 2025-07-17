@@ -5,9 +5,10 @@ import type { FilterOptions } from '../types';
 interface FiltersProps {
   filters: FilterOptions;
   onFilterChange: (newFilters: Partial<FilterOptions>) => void;
+  onClearAll: () => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange }) => {
+const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange, onClearAll }) => {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     onFilterChange({ [name]: value });
@@ -16,6 +17,10 @@ const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange }) => {
     if (name === 'l1Capability' && value !== filters.l1Capability) {
       onFilterChange({ l1Capability: value, l2Capability: 'all' });
     }
+  };
+  
+  const handleClearAll = () => {
+    onClearAll();
   };
 
   // Get available L2 capabilities based on selected L1
@@ -39,7 +44,10 @@ const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange }) => {
 
   return (
     <div className="filter-container">
-      <div className="filter-title">Filters</div>
+      <div className="filter-header">
+        <div className="filter-title">Filters</div>
+        <button className="filter-clear" onClick={handleClearAll}>Clear All</button>
+      </div>
       <div className="filter-options">
         <div className="filter-group">
           <label htmlFor="l1Capability">Business Capability (L1)</label>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Agent, Review } from '../types';
+import closeIcon from '../assets/close-icon.svg';
 
 interface AgentModalProps {
   agent: Agent | null;
@@ -78,7 +79,9 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
       <div className="modal-content">
         <div className="modal-header">
           <h2 className="modal-title">{agent.title}</h2>
-          <button className="modal-close" onClick={onClose}>&times;</button>
+          <button className="modal-close" onClick={onClose}>
+            <img src={closeIcon} alt="Close" className="close-icon" />
+          </button>
         </div>
         <div className="modal-body">
           <div className="modal-domain-container">
@@ -122,7 +125,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
             
             <h4 className="modal-section-title">Add Your Review</h4>
             <form className="comment-form" onSubmit={handleSubmitReview}>
-              <div>
+              <div className="name-container">
                 <label htmlFor="name">Your Name</label>
                 <input 
                   type="text" 
@@ -130,11 +133,11 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
                   value={name} 
                   onChange={(e) => setName(e.target.value)} 
                   required 
-                  className="form-control"
+                  className="name-input"
                 />
               </div>
               
-              <div>
+              <div className="rating-container">
                 <label htmlFor="rating">Rating</label>
                 <div className="rating-input">
                   {[5, 4, 3, 2, 1].map((star) => (
@@ -168,7 +171,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           </div>
         </div>
         <div className="modal-footer">
-          <button className="contact-btn">Contact Specialist</button>
+          <button className="contact-btn">Contact Developer</button>
         </div>
       </div>
     </div>

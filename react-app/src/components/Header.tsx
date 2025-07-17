@@ -1,10 +1,9 @@
 import React from 'react';
 
-interface HeaderProps {
-  onSearch: (query: string) => void;
-}
+interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  
   return (
     <header className="header">
       <div className="header-container">
