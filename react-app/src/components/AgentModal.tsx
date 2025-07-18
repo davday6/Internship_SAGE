@@ -96,14 +96,14 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           <div className="modal-domain-container">
             <span className="modal-domain">{agent.domain}</span>
             <span className="modal-subdomain">{agent.subdomain}</span>
-            <span className={`modal-trial ${agent.trial ? 'trial-available' : 'no-trial'}`}>
-              {agent.trial ? 'Trial Available' : 'No Trial Available'}
+            <span className={`modal-trial ${agent.trialUrl ? 'trial-available' : 'no-trial'}`}>
+              {agent.trialUrl ? 'Trial Available' : 'No Trial Available'}
             </span>
           </div>
           
           <div className="modal-description">{agent.description}</div>
           
-          {agent.trial && agent.trialUrl && (
+          {agent.trialUrl && (
             <a 
               href={agent.trialUrl} 
               target="_blank" 

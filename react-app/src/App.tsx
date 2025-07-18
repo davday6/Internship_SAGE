@@ -68,8 +68,8 @@ function App() {
     
     // Apply trial filter
     if (filters.trial !== 'all') {
-      const isTrialAvailable = filters.trial === 'true';
-      result = result.filter(agent => agent.trial === isTrialAvailable);
+      const hasTrialUrl = filters.trial === 'true';
+      result = result.filter(agent => Boolean(agent.trialUrl) === hasTrialUrl);
     }
     
     // Apply rating filter

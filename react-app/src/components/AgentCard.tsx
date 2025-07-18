@@ -33,8 +33,8 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, onClick }) => {
         <div className="agent-labels">
           <div className="agent-domain">{agent.domain}</div>
           {agent.subdomain && <div className="agent-subdomain">{agent.subdomain}</div>}
-          <div className={`agent-trial ${agent.trial ? 'trial-available' : 'no-trial'}`}>
-            {agent.trial ? 'Trial Available' : 'No Trial'}
+          <div className={`agent-trial ${agent.trialUrl ? 'trial-available' : 'no-trial'}`}>
+            {agent.trialUrl ? 'Trial Available' : 'No Trial'}
           </div>
         </div>
       </div>

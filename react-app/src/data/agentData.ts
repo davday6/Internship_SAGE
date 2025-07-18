@@ -52,7 +52,6 @@ export const agentsData: Agent[] = [
     domain: "Development",
     subdomain: "Software Development / DevOps",
     description: "An AI assistant specialized in helping developers with code completion, bug fixing, and code reviews. Supports multiple programming languages including JavaScript, Python, and Java.",
-    trial: true,
     trialUrl: "https://trial.devassistant.ai/register",
     contactUrl: "https://devassistant.ai/contact",
     reviewsList: [
@@ -76,7 +75,6 @@ export const agentsData: Agent[] = [
     domain: "Healthcare",
     subdomain: "Healthcare",
     description: "Specialized AI for healthcare data analysis, patient record management, and medical research assistance. HIPAA compliant and trained on validated medical datasets.",
-    trial: false,
     contactUrl: "https://healthtechanalyzer.com/support",
     reviewsList: [
       {
@@ -99,7 +97,6 @@ export const agentsData: Agent[] = [
     domain: "Data",
     subdomain: "Data Analytics & Business Intelligence",
     description: "AI-powered data visualization tool that automatically creates insightful charts and dashboards from raw data. Supports multiple data sources and export formats.",
-    trial: true,
     trialUrl: "https://datavizmaster.io/trial",
     contactUrl: "https://datavizmaster.io/contact",
     reviewsList: [
@@ -117,7 +114,6 @@ export const agentsData: Agent[] = [
     domain: "Testing",
     subdomain: "Testing",
     description: "AI agent that automatically generates comprehensive test cases, performs regression testing, and identifies potential vulnerabilities in your code.",
-    trial: false,
     reviewsList: [
       {
         author: "QA Lead",
@@ -133,7 +129,6 @@ export const agentsData: Agent[] = [
     domain: "AI",
     subdomain: "AI Safety & Security",
     description: "A specialized agent for monitoring and ensuring the ethical and safe operation of other AI systems. Provides risk assessments and mitigation strategies.",
-    trial: true,
     trialUrl: "https://ai-safety-guard.dev/try",
     reviewsList: [
       {
@@ -150,7 +145,6 @@ export const agentsData: Agent[] = [
     domain: "Business Services",
     subdomain: "HR",
     description: "AI-powered HR assistant for employee onboarding, performance review analysis, and HR policy compliance. Integrates with popular HRIS systems.",
-    trial: false,
     reviewsList: [
       {
         author: "HR Manager",
@@ -167,7 +161,6 @@ export const agentsData: Agent[] = [
     domain: "Business Services",
     subdomain: "Financial Services",
     description: "AI that provides market analysis and financial insights based on real-time data and historical trends. Helps with investment decisions and market forecasting.",
-    trial: true,
     trialUrl: "https://market-analysis-ai.com/free-trial",
     reviewsList: [
       {
@@ -184,7 +177,6 @@ export const agentsData: Agent[] = [
     domain: "Business Services",
     subdomain: "Financial Services",
     description: "AI that provides market research and competitive analysis based on real-time data and historical trends. Helps with investment decisions and market forecasting.",
-    trial: true,
     trialUrl: "https://market-research-bot.com/free-trial",
     reviewsList: [
       {
