@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import type { ChatMessage, ChatState, ChatContextProps } from '../types';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL
-
-console.log('Backend URL:', backendUrl);
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Initial chat state
 const initialState: ChatState = {
