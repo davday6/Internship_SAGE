@@ -50,7 +50,7 @@ lerna-debug.log*
 
 # Python/Chatbot specific
 chatbot/chatbotvenv/
-chatbot/data/
+# chatbot/data/ // temporarily commented out to allow data folder for testing
 chatbot/.env
 *.pyc
 __pycache__/
