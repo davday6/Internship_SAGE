@@ -22,7 +22,6 @@ export function addNewAgent(
     domain: agent.domain,
     subdomain: agent.subdomain || agent.domain,
     description: agent.description || `Description for ${agent.title}`,
-    trial: agent.trial !== undefined ? agent.trial : false,
     trialUrl: agent.trialUrl, // Include trial URL if provided
     reviewsList: agent.reviewsList || []
   };
