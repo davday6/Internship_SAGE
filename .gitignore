@@ -48,6 +48,14 @@ lerna-debug.log*
 .cache
 .parcel-cache
 
+# Python/Chatbot specific
+chatbot/chatbotvenv/
+chatbot/data/
+chatbot/.env
+*.pyc
+__pycache__/
+.pytest_cache/
+
 # Misc
 .DS_Store
 .env.local
