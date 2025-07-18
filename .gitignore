@@ -50,7 +50,6 @@ lerna-debug.log*
 
 # Python/Chatbot specific
 chatbot/chatbotvenv/
-chatbot/data/
 chatbot/.env
 *.pyc
 __pycache__/
