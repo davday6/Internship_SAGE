@@ -1,6 +1,35 @@
-# SAGE - Sogeti Agent Exchange
+# SAGE - Sogeti Agent Excha## Getting Started
 
-SAGE (Sogeti Agent Exchange) is a web application for browsing, filtering, and reviewing AI models. This application provides a user interface to search through different AI agents organized by business capabilities, view their details, and add reviews.
+1. Clone the repository
+```
+git clone [repository-url]
+```
+
+2. Install dependencies
+```
+cd react-app
+npm install
+```
+
+3. Start the backend server (required for API data)
+```
+cd ../backend
+npm install
+npm start
+```
+The backend server should be running on `http://localhost:3000`
+
+4. Run the development server
+```
+cd ../react-app
+npm run dev
+```
+
+5. Open your browser and navigate to `http://localhost:5173`
+
+## API Integration
+
+The application fetches agent data from the backend API running on `http://localhost:3000/api/agents`. Make sure the backend server is running before starting the React application. If the API is unavailable, the application will display an error message with a retry option. Agent Exchange) is a web application for browsing, filtering, and reviewing AI models. This application provides a user interface to search through different AI agents organized by business capabilities, view their details, and add reviews.
 
 ## Features
 

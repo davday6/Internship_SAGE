@@ -10,14 +10,18 @@ import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
 import ViewToggle from './components/ViewToggle'
-import { syncedAgentsData, syncAgentData } from './data/agentData'
+import { fetchAgentsData, syncAgentData } from './data/agentData'
 import type { Agent, FilterOptions, Review } from './types'
 
 function App() {
   // State for agents and filtered agents
-  const [agents, setAgents] = useState<Agent[]>(syncedAgentsData)
-  const [filteredAgents, setFilteredAgents] = useState<Agent[]>(syncedAgentsData)
+  const [agents, setAgents] = useState<Agent[]>([])
+  const [filteredAgents, setFilteredAgents] = useState<Agent[]>([])
   const [displayedAgents, setDisplayedAgents] = useState<Agent[]>([])
+  
+  // Loading and error states
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   
   // State for search and filters
   const [searchQuery, setSearchQuery] = useState('')
@@ -39,6 +43,25 @@ function App() {
   
   // State for view type (grid or list)
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid')
+
+  // Fetch agents data on component mount
+  useEffect(() => {
+    const loadAgents = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const agentsData = await fetchAgentsData()
+        setAgents(agentsData)
+      } catch (err) {
+        setError('Failed to load agents. Please check if the backend server is running.')
+        console.error('Error loading agents:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadAgents()
+  }, [])
   
   // Filter agents based on search query and filters
   useEffect(() => {
@@ -181,43 +204,65 @@ function App() {
       <Hero onSearch={handleSearch} searchQuery={searchQuery} />
       
       <main className="main">
-        <Stats agents={filteredAgents} />
-        
-        <Filters 
-          filters={filters} 
-          onFilterChange={handleFilterChange} 
-          onClearAll={handleClearAll}
-        />
-        
-        <div className="filters-view-controls">
-          <ViewToggle 
-            viewType={viewType}
-            onToggle={setViewType}
-          />
-        </div>
-        
-        <div className={`agents-container ${viewType}-view`}>
-          {displayedAgents.length > 0 ? (
-            displayedAgents.map(agent => (
-              <AgentCard 
-                key={agent.id} 
-                agent={agent} 
-                onClick={handleAgentClick} 
-              />
-            ))
-          ) : (
-            <div className="no-results">
-              No agents found matching your criteria. Try adjusting your filters.
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading agents...</p>
+          </div>
+        ) : error ? (
+          <div className="error-container">
+            <div className="error-message">
+              <h3>Error Loading Agents</h3>
+              <p>{error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="retry-button"
+              >
+                Retry
+              </button>
             </div>
-          )}
-        </div>
-        
-        {filteredAgents.length > itemsPerPage && (
-          <Pagination 
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          </div>
+        ) : (
+          <>
+            <Stats agents={filteredAgents} />
+            
+            <Filters 
+              filters={filters} 
+              onFilterChange={handleFilterChange} 
+              onClearAll={handleClearAll}
+            />
+            
+            <div className="filters-view-controls">
+              <ViewToggle 
+                viewType={viewType}
+                onToggle={setViewType}
+              />
+            </div>
+            
+            <div className={`agents-container ${viewType}-view`}>
+              {displayedAgents.length > 0 ? (
+                displayedAgents.map(agent => (
+                  <AgentCard 
+                    key={agent.id} 
+                    agent={agent} 
+                    onClick={handleAgentClick} 
+                  />
+                ))
+              ) : (
+                <div className="no-results">
+                  No agents found matching your criteria. Try adjusting your filters.
+                </div>
+              )}
+            </div>
+            
+            {filteredAgents.length > itemsPerPage && (
+              <Pagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
         )}
       </main>
       

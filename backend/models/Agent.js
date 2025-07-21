@@ -13,9 +13,7 @@ const agentSchema = new mongoose.Schema({
   domain: { type: String, required: true },
   subdomain: { type: String, required: true },
   description: { type: String, required: true },
-  rating: { type: Number, default: 0, min: 0, max: 5 },
-  comments: { type: Number, default: 0 },
-  trial: { type: Boolean, default: false },
+  commentUrl: { type: String, default: null },
   trialUrl: { type: String, default: null },
   reviewsList: [reviewSchema]
 }, {
