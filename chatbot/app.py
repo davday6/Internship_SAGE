@@ -71,7 +71,12 @@ def chat():
             model="gpt-4o",
             messages=[
                 {"role": "user", 
-                 "content": f"Find keywords in this query: {user_message} and return only the keywords."}
+                 "content": f"""Find keywords in this query: {user_message} and return only the keywords.
+                        Ignore common words used for greeting or general conversation.
+                        Also ignore words like domain, ai, agent, use case and focus only on more
+                        specific keywords that can be used to retrieve relevant information.
+                        Give only the words themselves separated by commas, without any additional text or explanation."""
+ }
                 ])
 
     keywords = query.choices[0].message.content.split(",")
@@ -79,10 +84,8 @@ def chat():
     final_keywords = []
 
     for keyword in keywords:
-        if keyword != "use" and keyword != "case":
-            final_keywords.append(keyword.strip())
-    
-    print(keywords)
+        word = keyword.strip()
+        final_keywords.append(word)
     
     context = ""
 
