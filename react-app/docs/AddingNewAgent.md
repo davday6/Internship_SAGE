@@ -47,7 +47,7 @@ You can also directly add a new agent by editing the `agentData.ts` file:
 1. Add a new object to the `agentsData` array
 2. Ensure your agent has a unique ID
 3. Make sure the `comments` property matches the length of the `reviewsList` array
-4. If the domain doesn't exist yet, add it to the `businessCapabilities` object
+4. Business capabilities are now automatically derived from agent data, so ensure your domain and subdomain are meaningful
 5. Include a `trialUrl` property if `trial` is set to `true`
 
 Example:
@@ -103,5 +103,5 @@ const handleAddReview = (agentId: string) => {
 
 - Each agent must have a unique ID
 - The `comments` property should always match the length of the `reviewsList` array
-- Ensure the domain and subdomain values match the existing categories in `businessCapabilities`
-- When adding a new domain, update the `businessCapabilities` object
+- Business capabilities are automatically derived from agent data - no manual updates needed
+- Use meaningful domain and subdomain values as they will automatically appear in the filters

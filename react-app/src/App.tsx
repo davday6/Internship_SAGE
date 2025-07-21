@@ -10,8 +10,8 @@ import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
 import ViewToggle from './components/ViewToggle'
-import { fetchAgentsData, syncAgentData } from './data/agentData'
-import type { Agent, FilterOptions, Review } from './types'
+import { fetchAgentsData, syncAgentData, deriveBusinessCapabilities } from './data/agentData'
+import type { Agent, FilterOptions, Review, BusinessCapabilities } from './types'
 
 function App() {
   // State for agents and filtered agents
@@ -43,6 +43,11 @@ function App() {
   
   // State for view type (grid or list)
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid')
+
+  // Derive business capabilities from agents data
+  const businessCapabilities: BusinessCapabilities = useMemo(() => {
+    return deriveBusinessCapabilities(agents);
+  }, [agents]);
 
   // Fetch agents data on component mount
   useEffect(() => {
@@ -228,6 +233,7 @@ function App() {
             
             <Filters 
               filters={filters} 
+              businessCapabilities={businessCapabilities}
               onFilterChange={handleFilterChange} 
               onClearAll={handleClearAll}
             />

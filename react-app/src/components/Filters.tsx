@@ -1,14 +1,14 @@
 import React from 'react';
-import { businessCapabilities } from '../data/agentData';
-import type { FilterOptions } from '../types';
+import type { FilterOptions, BusinessCapabilities } from '../types';
 
 interface FiltersProps {
   filters: FilterOptions;
+  businessCapabilities: BusinessCapabilities;
   onFilterChange: (newFilters: Partial<FilterOptions>) => void;
   onClearAll: () => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({ filters, onFilterChange, onClearAll }) => {
+const Filters: React.FC<FiltersProps> = ({ filters, businessCapabilities, onFilterChange, onClearAll }) => {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     onFilterChange({ [name]: value });

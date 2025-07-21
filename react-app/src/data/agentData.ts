@@ -1,49 +1,36 @@
 import type { Agent, BusinessCapabilities } from '../types';
 import { AgentService } from '../services/agentService';
 
-// Define business capability levels
-export const businessCapabilities: BusinessCapabilities = {
-  "Development": {
-    name: "Development",
-    subCapabilities: ["SDLC", "Software Development / DevOps", "Software Engineering / Automated Program Repair", "Software Development / Project Management", "Software Development / Developer Tools"]
-  },
-  "Data": {
-    name: "Data",
-    subCapabilities: ["Data Analytics & Business Intelligence", "Data Labeling & Annotation", "Text-to-SQL & Business Intelligence", "Enterprise Knowledge Management"]
-  },
-  "Testing": {
-    name: "Testing",
-    subCapabilities: ["Testing", "ERP"]
-  },
-  "AI": {
-    name: "AI",
-    subCapabilities: ["Computer Vision / AI-assisted Development", "AI Safety & Security", "AI/LLM Observability & Monitoring", "Synthetic Data Generation"]
-  },
-  "Healthcare": {
-    name: "Healthcare",
-    subCapabilities: ["Healthcare", "Healthcare / Health Insurance"]
-  },
-  "Business Services": {
-    name: "Business Services",
-    subCapabilities: ["HR", "Legal", "Procurement", "Financial Services", "Property Management", "Retail / Content Marketing"]
-  },
-  "Customer Engagement": {
-    name: "Customer Engagement",
-    subCapabilities: ["Customer Service / E-commerce", "Telecommunications", "Sales Experience"]
-  },
-  "Supply Chain": {
-    name: "Supply Chain",
-    subCapabilities: ["Demand Forecast (SCM)"]
-  },
-  "Government": {
-    name: "Government",
-    subCapabilities: ["Government"]
-  },
-  "Cross-Domain": {
-    name: "Cross-Domain",
-    subCapabilities: ["Multiple Domains"]
-  }
-};
+// Function to derive business capabilities from agent data
+export function deriveBusinessCapabilities(agents: Agent[]): BusinessCapabilities {
+  const capabilities: BusinessCapabilities = {};
+  
+  agents.forEach(agent => {
+    const domain = agent.domain;
+    const subdomain = agent.subdomain;
+    
+    if (!domain || !subdomain) return;
+    
+    if (!capabilities[domain]) {
+      capabilities[domain] = {
+        name: domain,
+        subCapabilities: []
+      };
+    }
+    
+    // Add subdomain if it doesn't already exist
+    if (!capabilities[domain].subCapabilities.includes(subdomain)) {
+      capabilities[domain].subCapabilities.push(subdomain);
+    }
+  });
+  
+  // Sort subcapabilities for consistent ordering
+  Object.values(capabilities).forEach(capability => {
+    capability.subCapabilities.sort();
+  });
+  
+  return capabilities;
+}
 
 // Synchronize comments count and calculate average ratings from reviews
 export function syncAgentData(agents: Agent[]): Agent[] {
@@ -71,7 +58,9 @@ export function syncAgentData(agents: Agent[]): Agent[] {
 export async function fetchAgentsData(): Promise<Agent[]> {
   try {
     const agents = await AgentService.fetchAgents();
-    return syncAgentData(agents);
+    const syncedAgents = syncAgentData(agents);
+    
+    return syncedAgents;
   } catch (error) {
     console.error('Failed to fetch agents data:', error);
     return []; // Return empty array as fallback
