@@ -54,7 +54,11 @@ router.post('/:id/reviews', async (req, res) => {
     agent.rating = totalRating / agent.reviewsList.length;
 
     await agent.save();
-    res.json({ message: 'Review added successfully', agent });
+    
+    // Convert to plain object to ensure all fields are included
+    const responseAgent = agent.toObject();
+    
+    res.json({ message: 'Review added successfully', agent: responseAgent });
 
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

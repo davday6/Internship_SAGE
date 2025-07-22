@@ -6,13 +6,14 @@ interface AgentModalProps {
   agent: Agent | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddReview: (agentId: string, review: Review) => void;
+  onAddReview: (agentId: string, review: Review) => Promise<void>;
 }
 
 const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddReview }) => {
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
   const [name, setName] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Reset form when modal is closed
   useEffect(() => {
@@ -20,6 +21,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
       setRating(0);
       setComment('');
       setName('');
+      setIsSubmitting(false);
     }
   }, [isOpen]);
 
@@ -37,31 +39,45 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
     });
   };
 
-  const handleSubmitReview = (e: React.FormEvent) => {
+  const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!name.trim() || !comment.trim()) {
-      alert('Please fill out all fields');
+    if (!name.trim() || !comment.trim() || rating === 0) {
+      alert('Please fill out all fields and select a rating');
       return;
     }
 
-    // Create a date in local timezone
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed
-    const day = String(today.getDate()).padStart(2, '0');
-    
-    const newReview: Review = {
-      author: name,
-      date: `${year}-${month}-${day}`, // Format: YYYY-MM-DD in local timezone
-      rating: rating,
-      comment: comment
-    };
+    setIsSubmitting(true);
 
-    onAddReview(agent.id, newReview);
-    setName('');
-    setComment('');
-    setRating(0);
+    try {
+      // Create a date in local timezone
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed
+      const day = String(today.getDate()).padStart(2, '0');
+      
+      const newReview: Review = {
+        author: name,
+        date: `${year}-${month}-${day}`, // Format: YYYY-MM-DD in local timezone
+        rating: rating,
+        comment: comment
+      };
+
+      await onAddReview(agent.id, newReview);
+      
+      // Reset form on successful submission
+      setName('');
+      setComment('');
+      setRating(0);
+      
+      // You could add a success message here if desired
+      // alert('Review submitted successfully!');
+    } catch (error) {
+      // Error handling is done in the parent component
+      console.error('Error submitting review:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Generate star rating display
@@ -149,6 +165,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
                   onChange={(e) => setName(e.target.value)} 
                   required 
                   className="name-input"
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -164,6 +181,7 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
                         value={star} 
                         checked={rating === star}
                         onChange={() => setRating(star)}
+                        disabled={isSubmitting}
                       />
                       <label htmlFor={`star${star}`}>★</label>
                     </React.Fragment>
@@ -178,10 +196,13 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
                   value={comment} 
                   onChange={(e) => setComment(e.target.value)} 
                   required
+                  disabled={isSubmitting}
                 ></textarea>
               </div>
               
-              <button type="submit">Submit Review</button>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit Review'}
+              </button>
             </form>
           </div>
         </div>

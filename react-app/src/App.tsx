@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { flushSync } from 'react-dom'
 import './App.css'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -10,7 +11,8 @@ import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
 import ViewToggle from './components/ViewToggle'
-import { fetchAgentsData, syncAgentData, deriveBusinessCapabilities } from './data/agentData'
+import { fetchAgentsData, deriveBusinessCapabilities } from './data/agentData'
+import { AgentService } from './services/agentService'
 import type { Agent, FilterOptions, Review, BusinessCapabilities } from './types'
 
 function App() {
@@ -67,47 +69,47 @@ function App() {
 
     loadAgents()
   }, [])
-  
-  // Filter agents based on search query and filters
-  useEffect(() => {
-    let result = [...agents];
+
+  // Helper function to apply filters and sorting to agents
+  const applyFiltersAndSorting = (agentsToFilter: Agent[], query: string, currentFilters: FilterOptions) => {
+    let result = [...agentsToFilter];
     
     // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (query) {
+      const searchQuery = query.toLowerCase();
       result = result.filter(
         agent => 
-          agent.title.toLowerCase().includes(query) ||
-          agent.description.toLowerCase().includes(query) ||
-          agent.domain.toLowerCase().includes(query) ||
-          agent.subdomain.toLowerCase().includes(query)
+          agent.title.toLowerCase().includes(searchQuery) ||
+          agent.description.toLowerCase().includes(searchQuery) ||
+          agent.domain.toLowerCase().includes(searchQuery) ||
+          agent.subdomain.toLowerCase().includes(searchQuery)
       );
     }
     
     // Apply business capability filters
-    if (filters.l1Capability !== 'all') {
-      result = result.filter(agent => agent.domain === filters.l1Capability);
+    if (currentFilters.l1Capability !== 'all') {
+      result = result.filter(agent => agent.domain === currentFilters.l1Capability);
     }
     
     // Apply subcapability filter (regardless of L1 selection)
-    if (filters.l2Capability !== 'all') {
-      result = result.filter(agent => agent.subdomain === filters.l2Capability);
+    if (currentFilters.l2Capability !== 'all') {
+      result = result.filter(agent => agent.subdomain === currentFilters.l2Capability);
     }
     
     // Apply trial filter
-    if (filters.trial !== 'all') {
-      const hasTrialUrl = filters.trial === 'true';
+    if (currentFilters.trial !== 'all') {
+      const hasTrialUrl = currentFilters.trial === 'true';
       result = result.filter(agent => Boolean(agent.trialUrl) === hasTrialUrl);
     }
     
     // Apply rating filter
-    if (filters.rating !== 'all') {
-      const minRating = parseFloat(filters.rating);
+    if (currentFilters.rating !== 'all') {
+      const minRating = parseFloat(currentFilters.rating);
       result = result.filter(agent => (agent.rating || 0) >= minRating);
     }
     
     // Apply sorting
-    switch (filters.sortBy) {
+    switch (currentFilters.sortBy) {
       case 'rating':
         result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
@@ -121,6 +123,12 @@ function App() {
         break;
     }
     
+    return result;
+  };
+  
+  // Filter agents based on search query and filters
+  useEffect(() => {
+    const result = applyFiltersAndSorting(agents, searchQuery, filters);
     setFilteredAgents(result);
     setCurrentPage(1); // Reset to first page when filters change
   }, [agents, searchQuery, filters]);
@@ -171,35 +179,38 @@ function App() {
   };
   
   // Handle adding a review
-  const handleAddReview = (agentId: string, review: Review) => {
-    setAgents(prev => {
-      // First update the reviewsList for the specific agent
-      const updatedAgents = prev.map(agent => {
-        if (agent.id === agentId) {
-          const reviewsList = agent.reviewsList ? [...agent.reviewsList, review] : [review];
-          return { 
-            ...agent, 
-            reviewsList,
-          };
-        }
-        return agent;
+  const handleAddReview = async (agentId: string, review: Review) => {
+    try {
+      // Submit review to the backend API
+      const updatedAgent = await AgentService.submitReview(agentId, {
+        author: review.author,
+        rating: review.rating,
+        comment: review.comment
       });
+
+      // Update agents state with the agent returned from the API
+      // Create a completely new agents array to ensure React detects the change
+      const newAgents = agents.map(agent => 
+        agent.id === agentId ? { ...updatedAgent } : { ...agent }
+      );
       
-      // Then use syncAgentData to calculate ratings and comments
-      return syncAgentData(updatedAgents);
-    });
-    
-    // Also update selected agent in the modal
-    if (selectedAgent && selectedAgent.id === agentId) {
-      const reviewsList = selectedAgent.reviewsList ? [...selectedAgent.reviewsList, review] : [review];
-      const updatedAgent = {
-        ...selectedAgent,
-        reviewsList,
-      };
-      
-      // Use syncAgentData to calculate rating and comments for consistency
-      const [calculatedAgent] = syncAgentData([updatedAgent]);
-      setSelectedAgent(calculatedAgent);
+      // Force immediate updates using flushSync
+      flushSync(() => {
+        setAgents([...newAgents]); // Create a new array reference
+        // Immediately update filtered agents using the same logic as useEffect
+        const filteredResult = applyFiltersAndSorting(newAgents, searchQuery, filters);
+        setFilteredAgents([...filteredResult]); // Create a new array reference
+      });
+
+      // Also update selected agent in the modal
+      if (selectedAgent && selectedAgent.id === agentId) {
+        setSelectedAgent(updatedAgent);
+      }
+
+      console.log('Review submitted successfully!');
+    } catch (error) {
+      console.error('Failed to submit review:', error);
+      alert('Failed to submit review. Please try again.');
     }
   };
 

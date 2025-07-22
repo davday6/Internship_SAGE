@@ -5,6 +5,7 @@ require('dotenv').config();
 
 // Import routes
 const agentRoutes = require('./routes/agents');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URL)
   .then(() => {
     console.log('✅ Connected to MongoDB Atlas successfully!');
   })
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Routes
 app.use('/api/agents', agentRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Basic route to test connection
 app.get('/', (req, res) => {

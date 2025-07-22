@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { ContactService, type ContactFormData } from '../services/agentService';
 
 const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     subject: '',
@@ -10,6 +11,7 @@ const ContactForm: React.FC = () => {
   
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -17,16 +19,20 @@ const ContactForm: React.FC = () => {
       ...prevData,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) {
+      setError(null);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
+    try {
+      await ContactService.submitContactForm(formData);
       setIsSubmitted(true);
-      setIsSubmitting(false);
       // Reset form after successful submission
       setFormData({
         name: '',
@@ -34,7 +40,11 @@ const ContactForm: React.FC = () => {
         subject: '',
         message: ''
       });
-    }, 1000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -43,7 +53,19 @@ const ContactForm: React.FC = () => {
         <h2 className="contact-title">Contact Us</h2>
         <p className="contact-subtitle">Have questions about our AI solutions? Get in touch with our team.</p>
         
-        {isSubmitted ? (
+        {error ? (
+          <div className="contact-error">
+            <div className="contact-error-icon">✕</div>
+            <h3>Oops! Something went wrong</h3>
+            <p>{error}</p>
+            <button 
+              className="contact-button" 
+              onClick={() => setError(null)}
+            >
+              Try again
+            </button>
+          </div>
+        ) : isSubmitted ? (
           <div className="contact-success">
             <div className="contact-success-icon">✓</div>
             <h3>Thank you for reaching out!</h3>
