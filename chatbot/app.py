@@ -133,6 +133,7 @@ def chat():
    
     return jsonify({"response": final_answer})
  
+retrieve_database()
+
 if __name__ == "__main__":
-    retrieve_database()
     app.run(debug=True)
