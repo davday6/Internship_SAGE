@@ -11,6 +11,7 @@ import Pagination from './components/Pagination'
 import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
 import ViewToggle from './components/ViewToggle'
+import AuthModal from './components/AuthModal'
 import { fetchAgentsData, deriveBusinessCapabilities } from './data/agentData'
 import { AgentService } from './services/agentService'
 import type { Agent, FilterOptions, Review, BusinessCapabilities } from './types'
@@ -38,6 +39,9 @@ function App() {
   // State for modal
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  
+  // State for auth modal
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1)
@@ -216,7 +220,9 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header 
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+      />
       <Hero onSearch={handleSearch} searchQuery={searchQuery} />
       
       <main className="main">
@@ -290,6 +296,12 @@ function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddReview={handleAddReview}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+      />
+      
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
       />
       
       <footer className="page-footer">

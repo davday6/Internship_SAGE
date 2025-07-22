@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Agent = require('../models/Agent');
+const { authMiddleware } = require('../middleware/auth');
 
 // GET /api/agents - Get all agents
 router.get('/', async (req, res) => {
@@ -25,14 +26,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/agents/:id/reviews - Add a review to an agent
-router.post('/:id/reviews', async (req, res) => {
+// POST /api/agents/:id/reviews - Add a review to an agent (Protected Route)
+router.post('/:id/reviews', authMiddleware, async (req, res) => {
   try {
-    const { author, rating, comment } = req.body;
+    const { rating, comment } = req.body;
     const agentId = req.params.id;
+    const author = req.user.fullName || req.user.username; // Use authenticated user's name
 
-    if (!author || !rating || !comment) {
-      return res.status(400).json({ message: 'Author, rating, and comment are required' });
+    if (!rating || !comment) {
+      return res.status(400).json({ message: 'Rating and comment are required' });
+    }
+
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
     }
 
     const agent = await Agent.findOne({ id: agentId });

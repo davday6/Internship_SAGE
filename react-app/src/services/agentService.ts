@@ -21,15 +21,24 @@ export class AgentService {
 
   static async submitReview(agentId: string, review: Omit<Review, 'date'>): Promise<Agent> {
     try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        throw new Error('Authentication required to submit a review');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/agents/${agentId}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(review),
       });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('You must be logged in to submit a review');
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 

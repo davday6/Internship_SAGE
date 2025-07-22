@@ -6,6 +6,7 @@ require('dotenv').config();
 // Import routes
 const agentRoutes = require('./routes/agents');
 const contactRoutes = require('./routes/contact');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -26,6 +27,7 @@ mongoose.connect(process.env.MONGODB_URL)
 // Routes
 app.use('/api/agents', agentRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic route to test connection
 app.get('/', (req, res) => {
