@@ -2,6 +2,142 @@
 
 This directory contains utility scripts for managing the SAGE backend database.
 
+## Available Scripts
+
+- **`clearAllReviews.js`** - Remove all reviews from all agents in the database
+- **`addNewAgent.js`** - Add a new agent to the database with interactive or command-line input
+
+## Add New Agent Script
+
+### Overview
+The `addNewAgent.js` script allows you to easily add new agents to the SAGE database. This is useful for:
+- Adding new AI agents discovered or developed
+- Populating the database with agent data
+- Bulk agent creation during initial setup
+
+### Usage
+
+#### Method 1: Using npm scripts (Recommended)
+
+From the `backend` directory:
+
+```bash
+# Interactive mode - prompts for all agent information
+npm run add-agent
+
+# Show help information
+npm run add-agent-help
+```
+
+#### Method 2: Interactive Mode
+
+From the `backend` directory:
+
+```bash
+node scripts/addNewAgent.js
+```
+
+This will prompt you for each required field:
+- Agent Title
+- Domain (e.g., "Business Services", "Healthcare", "Software Development")
+- Subdomain (e.g., "Financial Services", "Data Analytics", "Code Review")
+- Description
+- Trial URL (optional)
+- Comment/Contact URL (optional)
+
+#### Method 3: Command Line Mode
+
+From the `backend` directory:
+
+```bash
+node scripts/addNewAgent.js --title "Agent Name" --domain "Domain" --subdomain "Subdomain" --description "Description" [--trialUrl "URL"] [--commentUrl "URL"]
+```
+
+#### Method 4: Help Information
+
+```bash
+npm run add-agent-help
+# or
+node scripts/addNewAgent.js --help
+```
+
+### Examples
+
+**Interactive Mode:**
+```bash
+node scripts/addNewAgent.js
+```
+
+**Command Line Mode:**
+```bash
+node scripts/addNewAgent.js \
+  --title "Market Analysis AI" \
+  --domain "Business Services" \
+  --subdomain "Financial Services" \
+  --description "AI agent that provides comprehensive market analysis and financial insights using real-time data" \
+  --trialUrl "https://market-analysis-ai.com/trial"
+```
+
+### Features
+
+- **Input Validation**: Validates all required fields and URLs
+- **Duplicate Detection**: Warns if an agent with similar title already exists
+- **Auto ID Generation**: Automatically generates unique IDs for new agents
+- **Database Verification**: Confirms the agent was successfully saved
+- **Interactive Prompts**: User-friendly prompts for all required information
+- **Flexible Input**: Supports both interactive and command-line modes
+
+### What the script does
+
+1. Connects to your MongoDB database
+2. Validates all input data
+3. Checks for duplicate agent titles
+4. Generates a unique ID for the new agent
+5. Creates and saves the agent to the database
+6. Verifies the agent was successfully added
+7. Provides confirmation and closes the database connection
+
+### Example Output
+
+```
+🚀 Starting Add New Agent Script...
+==================================================
+💬 Starting interactive mode...
+
+📝 Enter agent information:
+========================================
+Agent Title: Market Analysis AI
+Domain (e.g., "Business Services", "Healthcare", "Software Development"): Business Services
+Subdomain (e.g., "Financial Services", "Data Analytics"): Financial Services
+Description: AI agent that provides market analysis and insights
+Trial URL (optional, press Enter to skip): https://example.com/trial
+Comment/Contact URL (optional, press Enter to skip): 
+
+🔗 Connecting to MongoDB...
+✅ Connected to MongoDB successfully!
+
+📊 Agent Summary:
+========================================
+ID: 15
+Title: Market Analysis AI
+Domain: Business Services
+Subdomain: Financial Services
+Description: AI agent that provides market analysis and insights
+Trial URL: https://example.com/trial
+Comment URL: Not provided
+========================================
+💾 Saving agent to database...
+✅ Agent added successfully!
+🆔 Agent ID: 15
+📝 Title: Market Analysis AI
+✅ Verification successful: Agent found in database
+🔌 Closing database connection...
+👋 Done!
+
+🎉 Agent successfully added to the SAGE database!
+   You can now view it in the web application.
+```
+
 ## Clear All Reviews Script
 
 ### Overview
