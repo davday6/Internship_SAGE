@@ -5,3 +5,4 @@ openai
 strip-markdown
 dotenv
 gunicorn
+pymongo
