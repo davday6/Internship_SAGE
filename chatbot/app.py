@@ -66,6 +66,7 @@ def retrieve_data(query, max_results = 5):
    
     return "\n".join(results) if results else " "
  
+responses = []
  
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -83,9 +84,9 @@ def chat():
             messages=[
                 {"role": "user",
                  "content": f"""Find keywords in this query: {user_message} and return only the keywords.
-                        Ignore common words used for greeting or general conversation.
-                        Also ignore words like domain, ai, agent, use case and focus only on more
-                        specific keywords that can be used to retrieve relevant information.
+                        Ignore common words used for greeting like hi or hello or other words used in
+                        general conversation. Also ignore words like domain, ai, agent, use case and focus only
+                        on more specific keywords that can be used to retrieve relevant information.
                         Give only the words themselves separated by commas, without any additional text or explanation."""}
                 ])
    
@@ -110,8 +111,9 @@ def chat():
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": f"""You are a helpful chatbot that tells the user the information
-                 that they asked for based on the context provided {context}. Be sure to use only
-                 the information in the provided context to answer the question. Limit your response to 50 words."""},
+                 that they asked for based on the context provided {context}. You can also use the information of the
+                 interactions before this message to answer the user's question. Find it in this: {responses}.
+                 Be sure to use only the information in the provided context to answer the question. Limit your response to 50 words."""},
                 {"role": "user", "content": user_message}
                 ])
  
@@ -130,9 +132,13 @@ def chat():
     #     response = "I'm not sure how to respond to that. Try asking something else!"
    
     final_answer = str(strip_markdown(answer))
+ 
+    responses.append("Query:" + " ".join(final_keywords) + "\n Response:" + final_answer)
+ 
+    print("Responses:", responses)
    
     return jsonify({"response": final_answer})
- 
+
 retrieve_database()
 
 if __name__ == "__main__":
