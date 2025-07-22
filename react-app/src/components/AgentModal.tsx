@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Agent, Review } from '../types';
 import closeIcon from '../assets/close-icon.svg';
+import bookIcon from '../assets/book-icon.svg';
 
 interface AgentModalProps {
   agent: Agent | null;
@@ -119,22 +120,43 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           
           <div className="modal-description">{agent.description}</div>
           
-          {agent.trialUrl && (
+          <div className="modal-actions">
+            {agent.trialUrl && (
+              <a 
+                href={agent.trialUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="trial-button"
+                onClick={(e) => {
+                  // Prevent the click from closing the modal
+                  e.stopPropagation();
+                  // Open in new tab using JavaScript to ensure it works
+                  window.open(agent.trialUrl, '_blank', 'noopener,noreferrer');
+                }}
+              >
+                Try {agent.title} Now
+              </a>
+            )}
+            
             <a 
-              href={agent.trialUrl} 
-              target="_blank" 
+              href={agent.documentationUrl || '#'} 
+              target={agent.documentationUrl ? '_blank' : '_self'} 
               rel="noopener noreferrer" 
-              className="trial-button"
+              className={`documentation-button ${!agent.documentationUrl ? 'disabled' : ''} ${agent.trialUrl ? 'with-trial' : 'without-trial'}`}
               onClick={(e) => {
+                if (!agent.documentationUrl) {
+                  e.preventDefault();
+                  return;
+                }
                 // Prevent the click from closing the modal
                 e.stopPropagation();
                 // Open in new tab using JavaScript to ensure it works
-                window.open(agent.trialUrl, '_blank', 'noopener,noreferrer');
+                window.open(agent.documentationUrl, '_blank', 'noopener,noreferrer');
               }}
             >
-              Try {agent.title} Now
+              <img src={bookIcon} alt="Documentation" className="book-icon" />
             </a>
-          )}
+          </div>
           
           <div className="modal-section">
             <h3 className="modal-section-title">Reviews</h3>
@@ -207,20 +229,28 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
           </div>
         </div>
         <div className="modal-footer">
-          {agent.contactUrl ? (
+          {agent.commentUrl ? (
             <a 
-              href={agent.contactUrl} 
-              target="_blank" 
+              href={agent.commentUrl.includes('@') ? `mailto:${agent.commentUrl}` : agent.commentUrl} 
+              target={agent.commentUrl.includes('@') ? '_self' : '_blank'}
               rel="noopener noreferrer"
               className="contact-btn"
               onClick={(e) => {
                 // Prevent the click from closing the modal
                 e.stopPropagation();
-                // Open in new tab using JavaScript to ensure it works
-                window.open(agent.contactUrl, '_blank', 'noopener,noreferrer');
+                // For email addresses, use mailto: protocol
+                if (agent.commentUrl?.includes('@') && !agent.commentUrl.startsWith('http')) {
+                  // This is an email address
+                  e.preventDefault();
+                  window.location.href = `mailto:${agent.commentUrl}`;
+                } else {
+                  // This is a URL, open in new tab
+                  e.preventDefault();
+                  window.open(agent.commentUrl, '_blank', 'noopener,noreferrer');
+                }
               }}
             >
-              Contact Developer
+              {agent.commentUrl.includes('@') && !agent.commentUrl.startsWith('http') ? 'Email Developer' : 'Contact Developer'}
             </a>
           ) : (
             <button className="contact-btn" disabled>Contact Developer</button>

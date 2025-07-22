@@ -1,11 +1,33 @@
 # Backend Scripts
 
-This directory contains utility scripts for managing the SAGE backend database.
+This directory contains utility scripts for managing the SAGE backend database and functionality.
 
 ## Available Scripts
 
 - **`clearAllReviews.js`** - Remove all reviews from all agents in the database
 - **`addNewAgent.js`** - Add a new agent to the database with interactive or command-line input
+- **`testEmail.js`** - Test email configuration for contact form notifications
+
+## Email Testing Script
+
+### Overview
+The `testEmail.js` script helps you verify that the email configuration is working correctly for contact form notifications.
+
+### Usage
+
+From the `backend` directory:
+
+```bash
+# Test email configuration
+npm run test-email
+```
+
+This script will:
+1. Check if all required environment variables are set
+2. Test the SMTP connection
+3. Optionally send a test email
+
+**Note:** Make sure your `.env` file is configured with email settings. See `EMAIL_SETUP.md` for detailed setup instructions.
 
 ## Add New Agent Script
 

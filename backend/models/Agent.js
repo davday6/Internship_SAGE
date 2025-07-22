@@ -17,6 +17,8 @@ const agentSchema = new mongoose.Schema({
   comments: { type: Number, default: 0 },
   commentUrl: { type: String, default: null },
   trialUrl: { type: String, default: null },
+  documentationUrl: { type: String, default: null },
+  version: { type: String, default: '1.0' },
   reviewsList: [reviewSchema]
 }, {
   timestamps: true,

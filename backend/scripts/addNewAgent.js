@@ -62,24 +62,36 @@ function validateAgentData(agentData) {
   }
   
   if (agentData.trialUrl && !isValidUrl(agentData.trialUrl)) {
-    errors.push('Trial URL must be a valid URL');
+    errors.push('Trial URL must be a valid URL (e.g., https://example.com) or email address');
+  }
+  
+  if (agentData.documentationUrl && !isValidUrl(agentData.documentationUrl)) {
+    errors.push('Documentation URL must be a valid URL (e.g., https://example.com) or email address');
   }
   
   if (agentData.commentUrl && !isValidUrl(agentData.commentUrl)) {
-    errors.push('Comment URL must be a valid URL');
+    errors.push('Comment URL must be a valid URL (e.g., https://example.com) or email address');
   }
   
   return errors;
 }
 
-// URL validation helper
+// URL validation helper (accepts URLs and email addresses)
 function isValidUrl(string) {
+  // Check if it's a valid URL
   try {
     new URL(string);
     return true;
   } catch (_) {
-    return false;
+    // If not a URL, check if it's a valid email address
+    return isValidEmail(string);
   }
+}
+
+// Email validation helper
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 // Interactive prompt for agent data
@@ -105,6 +117,11 @@ async function promptForAgentData() {
     const trialUrl = await question('Trial URL (optional, press Enter to skip): ');
     if (trialUrl.trim()) {
       agentData.trialUrl = trialUrl.trim();
+    }
+    
+    const documentationUrl = await question('Documentation URL (optional, press Enter to skip): ');
+    if (documentationUrl.trim()) {
+      agentData.documentationUrl = documentationUrl.trim();
     }
     
     const commentUrl = await question('Comment/Contact URL (optional, press Enter to skip): ');
@@ -203,6 +220,8 @@ async function addAgentToDatabase(agentData) {
       comments: 0,
       commentUrl: agentData.commentUrl ? agentData.commentUrl.trim() : null,
       trialUrl: agentData.trialUrl ? agentData.trialUrl.trim() : null,
+      documentationUrl: agentData.documentationUrl ? agentData.documentationUrl.trim() : null,
+      version: agentData.version || '1.0',
       reviewsList: []
     });
 
@@ -213,7 +232,9 @@ async function addAgentToDatabase(agentData) {
     console.log(`Domain: ${newAgent.domain}`);
     console.log(`Subdomain: ${newAgent.subdomain}`);
     console.log(`Description: ${newAgent.description}`);
+    console.log(`Version: ${newAgent.version}`);
     console.log(`Trial URL: ${newAgent.trialUrl || 'Not provided'}`);
+    console.log(`Documentation URL: ${newAgent.documentationUrl || 'Not provided'}`);
     console.log(`Comment URL: ${newAgent.commentUrl || 'Not provided'}`);
     console.log('=' .repeat(40));
 
@@ -281,8 +302,8 @@ Required Fields:
    - description: Detailed description of agent capabilities
 
 Optional Fields:
-   - trialUrl: URL for trying the agent
-   - commentUrl: URL for contacting agent creator or leaving feedback
+   - trialUrl: URL for trying the agent (e.g., https://example.com/trial)
+   - commentUrl: URL for contacting agent creator or email address (e.g., https://contact.com or user@example.com)
 
 Note: Make sure to run this from the backend directory where the .env file is located.
 `);
@@ -312,6 +333,7 @@ async function main() {
       subdomain: args.subdomain,
       description: args.description,
       trialUrl: args.trialUrl,
+      documentationUrl: args.documentationUrl,
       commentUrl: args.commentUrl
     };
   } else {

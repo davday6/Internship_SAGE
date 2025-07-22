@@ -37,6 +37,9 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, onClick }) => {
             {agent.trialUrl ? 'Trial Available' : 'No Trial'}
           </div>
         </div>
+        <div className="agent-version">
+          V {agent.version || '1.0'}
+        </div>
       </div>
       <div className="agent-body">
         <div className="agent-description">{agent.description}</div>

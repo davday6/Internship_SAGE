@@ -405,12 +405,23 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
 }
 
 .agent-title {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem; /* Reduced to create tighter spacing with labels */
+}
+
+.agent-version {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 /* Create a container for agent labels */
@@ -560,6 +571,7 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: var(--box-shadow);
 }
 
@@ -630,10 +642,89 @@
   font-size: 0.85rem; /* Added for consistency */
 }
 
+/* Modal actions container */
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Documentation button styles */
+.documentation-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  color: var(--sogeti-blue);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+/* Documentation button positioning */
+.documentation-button.with-trial {
+  order: 2;
+  margin-left: auto;
+}
+
+.documentation-button.without-trial {
+  order: 1;
+}
+
+.documentation-button:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.documentation-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.documentation-button.disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border-color: #e9ecef;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.documentation-button.disabled:hover {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.documentation-button.disabled .book-icon {
+  opacity: 0.5;
+}
+
+.book-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
 /* Trial button styles */
 .trial-button {
-  display: block;
-  margin: 1rem 0 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1.5rem;
   background-color: #b6d7f8; /* Light blue as requested */
   color: var(--sogeti-blue);
@@ -645,6 +736,8 @@
   transition: all 0.2s ease;
   border: 2px solid #b6d7f8;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  order: 1;
+  flex: 1;
 }
 
 .trial-button:hover {

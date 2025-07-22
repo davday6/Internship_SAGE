@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ContactMessage = require('../models/ContactMessage');
+const emailService = require('../services/emailService');
 
 // POST /api/contact - Submit a contact form
 router.post('/', async (req, res) => {
@@ -32,6 +33,22 @@ router.post('/', async (req, res) => {
 
     // Save to database
     await contactMessage.save();
+
+    // Send email notification
+    try {
+      const emailResult = await emailService.sendContactFormEmail({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        subject: subject.trim(),
+        message: message.trim()
+      });
+      
+      console.log('Email sent successfully:', emailResult);
+    } catch (emailError) {
+      // Log the email error but don't fail the request
+      // The form submission should succeed even if email fails
+      console.error('Email sending failed:', emailError);
+    }
 
     // Return success response
     res.status(201).json({ 
@@ -124,6 +141,21 @@ router.put('/:id/status', async (req, res) => {
     console.error('Error updating contact message status:', error);
     res.status(500).json({ 
       message: 'Server error',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// GET /api/contact/test-email - Test email configuration (for development)
+router.get('/test-email', async (req, res) => {
+  try {
+    const testResult = await emailService.testConnection();
+    res.json(testResult);
+  } catch (error) {
+    console.error('Email test failed:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Email test failed',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }

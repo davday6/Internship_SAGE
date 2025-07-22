@@ -7,7 +7,9 @@ export interface Agent {
   rating?: number; // Made optional since it's calculated from reviews
   comments?: number; // Made optional since it's calculated from reviews
   trialUrl?: string; // URL to access the trial
-  contactUrl?: string; // URL to contact the developer
+  commentUrl?: string; // URL to contact the developer or email address
+  documentationUrl?: string; // URL to the agent's documentation
+  version?: string; // Agent version number
   reviewsList?: Review[];
 }
 
