@@ -12,7 +12,7 @@ CORS(app) # Enable CORS for all routes
  
 dotenv.load_dotenv()
  
-data_df = pd.DataFrame(columns = ["id", "title", "domain", "subdomain", "description"])
+data_df = pd.DataFrame(columns = ["id", "title", "domains", "subdomains", "description"])
  
 def retrieve_database():
     client = MongoClient(os.getenv("MONGODB_URL"))
@@ -37,14 +37,14 @@ def retrieve_database():
     for doc in result:
         ids.append(doc["id"])
         titles.append(doc["title"])
-        domains.append(doc["domain"])
-        subdomains.append(doc["domain"])
+        domains.append(doc["domains"])
+        subdomains.append(doc["subdomains"])
         descriptions.append(doc["description"])
  
     data_df["id"] = ids
     data_df["title"] = titles
-    data_df["domain"] = domains
-    data_df["subdomain"] = subdomains
+    data_df["domains"] = domains
+    data_df["subdomains"] = subdomains
     data_df["description"] = descriptions
  
  
@@ -58,7 +58,7 @@ def retrieve_data(query, max_results = 5):
    
     for index, row in data_df.iterrows():
         if any(query_lower in str(value).lower() for value in row):
-            context_row = " | ".join([str(c + " " + row[c]) for c in data_df.columns if str(row[c]).strip()])
+            context_row = " | ".join([str(c + " " + " ".join(row[c]) if type(row[c]) == list else row[c]) for c in data_df.columns if str(row[c]).strip()])
             if context_row:
                 results.append(context_row)                
             if len(results) >= max_results:

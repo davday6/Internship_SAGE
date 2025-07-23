@@ -9,7 +9,7 @@ import { syncAgentData } from '../data/agentData';
  * @returns A new array of agents with the new agent added
  */
 export function addNewAgent(
-  agent: Partial<Agent> & { title: string; domain: string; trialUrl?: string }, 
+  agent: Partial<Agent> & { title: string; domains: string[]; subdomains?: string[]; trialUrl?: string }, 
   currentAgents: Agent[]
 ): Agent[] {
   // Generate a unique ID
@@ -19,10 +19,9 @@ export function addNewAgent(
   const newAgent: Agent = {
     id: newId,
     title: agent.title,
-    domain: agent.domain,
-    subdomain: agent.subdomain || agent.domain,
+    domains: agent.domains,
+    subdomains: agent.subdomains || agent.domains, // Default subdomains to domains if not provided
     description: agent.description || `Description for ${agent.title}`,
-    //trial: agent.trial !== undefined ? agent.trial : false,
     trialUrl: agent.trialUrl, // Include trial URL if provided
     reviewsList: agent.reviewsList || []
   };

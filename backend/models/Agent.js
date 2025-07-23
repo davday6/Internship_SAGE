@@ -10,8 +10,8 @@ const reviewSchema = new mongoose.Schema({
 const agentSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
-  domain: { type: String, required: true },
-  subdomain: { type: String, required: true },
+  domains: [{ type: String, required: true }], // Changed to array
+  subdomains: [{ type: String, required: true }], // Changed to array
   description: { type: String, required: true },
   rating: { type: Number, default: 0 },
   comments: { type: Number, default: 0 },
@@ -26,6 +26,6 @@ const agentSchema = new mongoose.Schema({
 });
 
 // Create index for search functionality
-agentSchema.index({ title: 'text', description: 'text', domain: 'text' });
+agentSchema.index({ title: 'text', description: 'text', domains: 'text', subdomains: 'text' });
 
 module.exports = mongoose.model('Agent', agentSchema); 

@@ -49,12 +49,26 @@ function validateAgentData(agentData) {
     errors.push('Title is required');
   }
   
-  if (!agentData.domain || agentData.domain.trim() === '') {
-    errors.push('Domain is required');
+  // Check domains array
+  if (!agentData.domains || !Array.isArray(agentData.domains) || agentData.domains.length === 0) {
+    errors.push('At least one domain is required');
+  } else {
+    // Check if all domains are non-empty strings
+    const invalidDomains = agentData.domains.filter(d => !d || typeof d !== 'string' || d.trim() === '');
+    if (invalidDomains.length > 0) {
+      errors.push('All domains must be non-empty strings');
+    }
   }
   
-  if (!agentData.subdomain || agentData.subdomain.trim() === '') {
-    errors.push('Subdomain is required');
+  // Check subdomains array
+  if (!agentData.subdomains || !Array.isArray(agentData.subdomains) || agentData.subdomains.length === 0) {
+    errors.push('At least one subdomain is required');
+  } else {
+    // Check if all subdomains are non-empty strings
+    const invalidSubdomains = agentData.subdomains.filter(s => !s || typeof s !== 'string' || s.trim() === '');
+    if (invalidSubdomains.length > 0) {
+      errors.push('All subdomains must be non-empty strings');
+    }
   }
   
   if (!agentData.description || agentData.description.trim() === '') {
@@ -110,8 +124,15 @@ async function promptForAgentData() {
   
   try {
     agentData.title = await question('Agent Title: ');
-    agentData.domain = await question('Domain (e.g., "Business Services", "Healthcare", "Software Development"): ');
-    agentData.subdomain = await question('Subdomain (e.g., "Financial Services", "Data Analytics"): ');
+    
+    // Handle domains - support multiple domains
+    const domainsInput = await question('Domains (comma-separated, e.g., "Business Services, Healthcare"): ');
+    agentData.domains = domainsInput.split(',').map(d => d.trim()).filter(d => d.length > 0);
+    
+    // Handle subdomains - support multiple subdomains
+    const subdomainsInput = await question('Subdomains (comma-separated, e.g., "Financial Services, Data Analytics"): ');
+    agentData.subdomains = subdomainsInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    
     agentData.description = await question('Description: ');
     
     const trialUrl = await question('Trial URL (optional, press Enter to skip): ');
@@ -213,8 +234,8 @@ async function addAgentToDatabase(agentData) {
     const newAgent = new Agent({
       id: uniqueId,
       title: agentData.title.trim(),
-      domain: agentData.domain.trim(),
-      subdomain: agentData.subdomain.trim(),
+      domains: agentData.domains.map(d => d.trim()),
+      subdomains: agentData.subdomains.map(s => s.trim()),
       description: agentData.description.trim(),
       rating: 0,
       comments: 0,
@@ -229,8 +250,8 @@ async function addAgentToDatabase(agentData) {
     console.log('=' .repeat(40));
     console.log(`ID: ${newAgent.id}`);
     console.log(`Title: ${newAgent.title}`);
-    console.log(`Domain: ${newAgent.domain}`);
-    console.log(`Subdomain: ${newAgent.subdomain}`);
+    console.log(`Domains: ${newAgent.domains.join(', ')}`);
+    console.log(`Subdomains: ${newAgent.subdomains.join(', ')}`);
     console.log(`Description: ${newAgent.description}`);
     console.log(`Version: ${newAgent.version}`);
     console.log(`Trial URL: ${newAgent.trialUrl || 'Not provided'}`);
@@ -277,7 +298,7 @@ function showHelp() {
 📖 Add New Agent Script Help
 =${'='.repeat(30)}
 
-This script adds a new agent to the SAGE database.
+This script adds a new agent to the SAGE database with support for multiple domains and subdomains.
 
 Usage Options:
 
@@ -285,20 +306,20 @@ Usage Options:
    node scripts/addNewAgent.js
 
 2. Command Line Mode:
-   node scripts/addNewAgent.js --title "Agent Name" --domain "Domain" --subdomain "Subdomain" --description "Description" [--trialUrl "URL"] [--commentUrl "URL"]
+   node scripts/addNewAgent.js --title "Agent Name" --domains "Domain1,Domain2" --subdomains "Subdomain1,Subdomain2" --description "Description" [--trialUrl "URL"] [--commentUrl "URL"]
 
 Examples:
 
 Interactive:
    node scripts/addNewAgent.js
 
-Command Line:
-   node scripts/addNewAgent.js --title "Market Analysis AI" --domain "Business Services" --subdomain "Financial Services" --description "AI agent that provides market analysis and insights" --trialUrl "https://market-ai.com/trial"
+Command Line with Multiple Domains/Subdomains:
+   node scripts/addNewAgent.js --title "Multi-Domain AI" --domains "Business Services,Healthcare" --subdomains "Financial Services,Medical Analytics" --description "AI agent that provides analysis across multiple domains"
 
 Required Fields:
    - title: Agent name
-   - domain: Business domain (e.g., "Healthcare", "Software Development")  
-   - subdomain: More specific capability (e.g., "Data Analytics", "Code Review")
+   - domains: Business domains (comma-separated, e.g., "Healthcare,Software Development")
+   - subdomains: More specific capabilities (comma-separated, e.g., "Data Analytics,Code Review")
    - description: Detailed description of agent capabilities
 
 Optional Fields:
@@ -325,12 +346,25 @@ async function main() {
   let agentData;
   
   // Check if we have command line arguments
-  if (args.title || args.domain || args.subdomain || args.description) {
+  if (args.title || args.domains || args.subdomains || args.description) {
     console.log('📋 Using command line arguments...');
+    
+    // Handle domains and subdomains as comma-separated values
+    let domains = [];
+    let subdomains = [];
+    
+    if (args.domains) {
+      domains = args.domains.split(',').map(d => d.trim()).filter(d => d.length > 0);
+    }
+    
+    if (args.subdomains) {
+      subdomains = args.subdomains.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    }
+    
     agentData = {
       title: args.title,
-      domain: args.domain,
-      subdomain: args.subdomain,
+      domains: domains,
+      subdomains: subdomains,
       description: args.description,
       trialUrl: args.trialUrl,
       documentationUrl: args.documentationUrl,

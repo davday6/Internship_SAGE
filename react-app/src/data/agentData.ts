@@ -6,22 +6,27 @@ export function deriveBusinessCapabilities(agents: Agent[]): BusinessCapabilitie
   const capabilities: BusinessCapabilities = {};
   
   agents.forEach(agent => {
-    const domain = agent.domain;
-    const subdomain = agent.subdomain;
+    // Use the new array format
+    const domains = agent.domains || [];
+    const subdomains = agent.subdomains || [];
     
-    if (!domain || !subdomain) return;
-    
-    if (!capabilities[domain]) {
-      capabilities[domain] = {
-        name: domain,
-        subCapabilities: []
-      };
-    }
-    
-    // Add subdomain if it doesn't already exist
-    if (!capabilities[domain].subCapabilities.includes(subdomain)) {
-      capabilities[domain].subCapabilities.push(subdomain);
-    }
+    domains.forEach(domain => {
+      if (!domain) return;
+      
+      if (!capabilities[domain]) {
+        capabilities[domain] = {
+          name: domain,
+          subCapabilities: []
+        };
+      }
+      
+      // Add all subdomains for this domain
+      subdomains.forEach(subdomain => {
+        if (subdomain && !capabilities[domain].subCapabilities.includes(subdomain)) {
+          capabilities[domain].subCapabilities.push(subdomain);
+        }
+      });
+    });
   });
   
   // Sort subcapabilities for consistent ordering

@@ -10,6 +10,12 @@
     "clear-reviews-safe": "node scripts/clearAllReviews.js",
     "add-agent": "node scripts/addNewAgent.js",
     "add-agent-help": "node scripts/addNewAgent.js --help",
+    "migrate-domains": "node scripts/migrateToMultipleDomains.js --confirm",
+    "migrate-domains-safe": "node scripts/migrateToMultipleDomains.js",
+    "split-domains": "node scripts/splitDomains.js --confirm",
+    "split-domains-safe": "node scripts/splitDomains.js",
+    "debug-agents": "node scripts/debugAgentStructure.js",
+    "test-domains": "node scripts/testMultipleDomains.js",
     "test-email": "node scripts/testEmail.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

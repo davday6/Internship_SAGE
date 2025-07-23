@@ -50,29 +50,29 @@ const Filters: React.FC<FiltersProps> = ({ filters, businessCapabilities, onFilt
       </div>
       <div className="filter-options">
         <div className="filter-group">
-          <label htmlFor="l1Capability">Business Capability (L1)</label>
+          <label htmlFor="l1Capability">Domain</label>
           <select 
             id="l1Capability" 
             name="l1Capability" 
             value={filters.l1Capability} 
             onChange={handleFilterChange}
           >
-            <option value="all">All Capabilities</option>
-            {Object.keys(businessCapabilities).map((cap) => (
+            <option value="all">All Domains</option>
+            {Object.keys(businessCapabilities).sort().map((cap) => (
               <option key={cap} value={cap}>{cap}</option>
             ))}
           </select>
         </div>
 
         <div className="filter-group">
-          <label htmlFor="l2Capability">Business Capability (L2)</label>
+          <label htmlFor="l2Capability">Capability</label>
           <select 
             id="l2Capability" 
             name="l2Capability" 
             value={filters.l2Capability} 
             onChange={handleFilterChange}
           >
-            <option value="all">All Sub-Capabilities</option>
+            <option value="all">All Capabilities</option>
             {getL2Options().map((subcap) => (
               <option key={subcap} value={subcap}>{subcap}</option>
             ))}

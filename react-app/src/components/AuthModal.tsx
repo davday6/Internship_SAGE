@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { AuthService } from '../services/authService';
+import PasswordStrength from './PasswordStrength';
 import type { LoginCredentials, RegisterData } from '../services/authService';
 
 interface AuthModalProps {
@@ -13,6 +14,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   
   const { login } = useAuth();
 
@@ -36,6 +38,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setError(null);
     setSuccess(null);
     setIsSubmitting(false);
+    setIsPasswordValid(false);
   };
 
   const handleClose = () => {
@@ -70,6 +73,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check password validation before submitting
+    if (!isPasswordValid) {
+      setError('Please ensure your password meets all requirements');
+      return;
+    }
+    
     setIsSubmitting(true);
     setError(null);
 
@@ -220,15 +230,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   onChange={handleRegisterChange}
                   required
                   disabled={isSubmitting}
-                  placeholder="Choose a password (min. 6 characters)"
-                  minLength={6}
+                  placeholder="Choose a strong password"
+                />
+                <PasswordStrength 
+                  password={registerData.password}
+                  onValidationChange={setIsPasswordValid}
                 />
               </div>
 
               <button 
                 type="submit" 
                 className="auth-submit-btn"
-                disabled={isSubmitting}
+                disabled={isSubmitting || (!isPasswordValid && registerData.password.length > 0)}
               >
                 {isSubmitting ? 'Creating account...' : 'Sign Up'}
               </button>

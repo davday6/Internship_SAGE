@@ -31,14 +31,24 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, onClick }) => {
       <div className="agent-header">
         <div className="agent-title">{agent.title}</div>
         <div className="agent-labels">
-          <div className="agent-domain">{agent.domain}</div>
-          {agent.subdomain && <div className="agent-subdomain">{agent.subdomain}</div>}
+          {/* Display domains */}
+          <div className="agent-domains">
+            {(agent.domains || []).map((domain, index) => (
+              <span key={index} className="agent-domain">{domain}</span>
+            ))}
+          </div>
+          {/* Display subdomains */}
+          <div className="agent-subdomains">
+            {(agent.subdomains || []).map((subdomain, index) => (
+              <span key={index} className="agent-subdomain">{subdomain}</span>
+            ))}
+          </div>
           <div className={`agent-trial ${agent.trialUrl ? 'trial-available' : 'no-trial'}`}>
             {agent.trialUrl ? 'Trial Available' : 'No Trial'}
           </div>
         </div>
         <div className="agent-version">
-          V {agent.version || '1.0'}
+          v{agent.version || '1.0'}
         </div>
       </div>
       <div className="agent-body">

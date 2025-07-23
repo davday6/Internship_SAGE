@@ -105,8 +105,18 @@ const AgentModal: React.FC<AgentModalProps> = ({ agent, isOpen, onClose, onAddRe
         </div>
         <div className="modal-body">
           <div className="modal-domain-container">
-            <span className="modal-domain">{agent.domain}</span>
-            <span className="modal-subdomain">{agent.subdomain}</span>
+            {/* Display domains */}
+            <div className="modal-domains">
+              {(agent.domains || []).map((domain, index) => (
+                <span key={index} className="modal-domain">{domain}</span>
+              ))}
+            </div>
+            {/* Display subdomains */}
+            <div className="modal-subdomains">
+              {(agent.subdomains || []).map((subdomain, index) => (
+                <span key={index} className="modal-subdomain">{subdomain}</span>
+              ))}
+            </div>
             <span className={`modal-trial ${agent.trialUrl ? 'trial-available' : 'no-trial'}`}>
               {agent.trialUrl ? 'Trial Available' : 'No Trial Available'}
             </span>

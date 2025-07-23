@@ -763,6 +763,12 @@
   align-items: center;
 }
 
+.agent-domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
 .agent-domain {
   display: inline-block;
   padding: 0.25rem 0.5rem;
@@ -770,6 +776,12 @@
   color: var(--white);
   border-radius: 4px;
   font-size: 0.85rem;
+}
+
+.agent-subdomains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .agent-subdomain {
@@ -954,6 +966,12 @@
   align-items: center;
 }
 
+.modal-domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
 .modal-domain {
   display: inline-block;
   padding: 0.25rem 0.5rem;
@@ -961,6 +979,12 @@
   color: var(--white);
   border-radius: 4px;
   font-size: 0.85rem;
+}
+
+.modal-subdomains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .modal-subdomain {
@@ -2374,6 +2398,7 @@
 
 .auth-modal-body {
   padding: 1.5rem;
+  overflow: visible;
 }
 
 .auth-error {
@@ -2406,6 +2431,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
+  overflow: visible;
 }
 
 .auth-form-group label {
@@ -2499,4 +2526,142 @@
 
 .auth-link-button:focus {
   outline: none;
+}
+
+/* Password Strength Component */
+.password-strength-container {
+  position: relative;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.password-strength-indicator {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.strength-bar-container {
+  flex: 1;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strength-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.strength-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: right;
+}
+
+.password-tooltip-wrapper {
+  position: relative;
+}
+
+.password-info-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  padding: 0.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-info-btn:hover,
+.password-info-btn:focus {
+  opacity: 1;
+  outline: none;
+}
+
+.password-tooltip {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #333;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  z-index: 1002;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 280px;
+  max-width: 90vw;
+}
+
+.password-tooltip::after {
+  display: none;
+}
+
+.password-tooltip-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.password-rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.password-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.password-rule.valid {
+  color: #4caf50;
+}
+
+.password-rule.invalid {
+  color: #ff9800;
+}
+
+.rule-icon {
+  font-weight: bold;
+  font-size: 0.8rem;
+  width: 12px;
+  text-align: center;
+}
+
+/* Mobile responsive password tooltip */
+@media (max-width: 768px) {
+  .password-tooltip {
+    position: fixed;
+    bottom: auto;
+    left: 1rem;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: auto;
+    width: auto;
+  }
+  
+  .password-tooltip::after {
+    display: none;
+  }
 }

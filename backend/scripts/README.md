@@ -5,7 +5,11 @@ This directory contains utility scripts for managing the SAGE backend database a
 ## Available Scripts
 
 - **`clearAllReviews.js`** - Remove all reviews from all agents in the database
-- **`addNewAgent.js`** - Add a new agent to the database with interactive or command-line input
+- **`addNewAgent.js`** - Add a new agent to the database with interactive or command-line input (now supports multiple domains/subdomains)
+- **`migrateToMultipleDomains.js`** - Migrate existing agents from single domain/subdomain to multiple domains/subdomains format
+- **`splitDomains.js`** - Split domains/subdomains containing "/" or "&" separators into separate array entries
+- **`testMultipleDomains.js`** - Test the multiple domains/subdomains functionality
+- **`debugAgentStructure.js`** - Debug and analyze the structure of agents in the database
 - **`testEmail.js`** - Test email configuration for contact form notifications
 
 ## Email Testing Script
@@ -251,4 +255,123 @@ node scripts/clearAllReviews.js --confirm
 
 - **"Cannot find module"**: Make sure you're running the script from the `backend` directory
 - **Connection errors**: Verify your `.env` file contains the correct `MONGODB_URL`
+
+## Multiple Domains Migration Script
+
+### Overview
+The `migrateToMultipleDomains.js` script migrates existing agents from single domain/subdomain fields to the new multiple domains/subdomains array format while maintaining backward compatibility.
+
+### Usage
+
+From the `backend` directory:
+
+```bash
+# Preview migration (safe mode)
+npm run migrate-domains-safe
+
+# Execute migration
+npm run migrate-domains
+```
+
+### What the script does
+
+1. Connects to your MongoDB database
+2. Finds agents that need migration (have old single domain/subdomain fields but no new array fields)
+3. Creates `domains` and `subdomains` arrays from existing single values
+4. Preserves original fields for backward compatibility
+5. Verifies successful migration
+
+### Safety Features
+
+- **Confirmation Required**: The script requires the `--confirm` flag to actually perform migration
+- **Non-destructive**: Original fields are preserved
+- **Verification**: After migration, verifies that all agents were successfully updated
+- **Error Handling**: Proper error handling and database connection management
+
+## Multiple Domains Test Script
+
+### Overview
+The `testMultipleDomains.js` script tests the multiple domains/subdomains functionality to ensure everything works correctly.
+
+### Usage
+
+From the `backend` directory:
+
+```bash
+npm run test-domains
+```
+
+### What the script tests
+
+1. Creates a test agent with multiple domains and subdomains
+2. Verifies agent retrieval works correctly
+3. Tests text search across multiple domains
+4. Tests filtering by specific domains and subdomains
+5. Checks backward compatibility with legacy fields
+6. Cleans up test data
+
+This script is useful for verifying that the migration and new functionality work correctly before deploying to production.
+
+## Split Domains Script
+
+### Overview
+The `splitDomains.js` script automatically splits domains and subdomains that contain "/" or "&" separators into separate array entries, providing cleaner categorization.
+
+### Usage
+
+From the `backend` directory:
+
+```bash
+# Preview what would be split (safe mode)
+npm run split-domains-safe
+
+# Execute the domain splitting
+npm run split-domains
+```
+
+### What the script does
+
+1. Finds all agents with domains or subdomains containing "/" or "&" separators
+2. Splits these strings into separate array entries while preserving special cases (like "R&D")
+3. Removes duplicate entries from the resulting arrays
+4. Updates the database with the new arrays
+5. Verifies that the splitting was successful
+
+### Examples of Transformations
+
+- `"Software Development / Developer Tools"` → `["Software Development", "Developer Tools"]`
+- `"Data Analytics & Business Intelligence"` → `["Data Analytics", "Business Intelligence"]`
+- `"Healthcare / Health Insurance"` → `["Healthcare", "Health Insurance"]`
+- `"R&D Data Integration"` → `["R&D Data Integration"]` (preserved as special case)
+
+### Safety Features
+
+- **Confirmation Required**: The script requires the `--confirm` flag to actually perform splits
+- **Non-destructive**: Original legacy fields are preserved
+- **Special Case Handling**: Preserves terms like "R&D" that shouldn't be split
+- **Duplicate Removal**: Automatically removes duplicate domains/subdomains
+- **Verification**: After splitting, verifies that the operation was successful
+
+## Debug Agent Structure Script
+
+### Overview
+The `debugAgentStructure.js` script analyzes the current structure of agents in the database, useful for troubleshooting and understanding the data state.
+
+### Usage
+
+From the `backend` directory:
+
+```bash
+npm run debug-agents
+```
+
+### What the script shows
+
+1. Structure analysis of the first 10 agents
+2. Count of agents with legacy vs new field formats
+3. Migration criteria checks
+4. Alternative migration strategies
+5. Total agent count in database
+
+This script is particularly useful for understanding why migration scripts might find 0 agents to migrate or for verifying the current state of your data.
 - **Permission errors**: Ensure your MongoDB user has write permissions

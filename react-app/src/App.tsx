@@ -82,22 +82,38 @@ function App() {
     if (query) {
       const searchQuery = query.toLowerCase();
       result = result.filter(
-        agent => 
-          agent.title.toLowerCase().includes(searchQuery) ||
-          agent.description.toLowerCase().includes(searchQuery) ||
-          agent.domain.toLowerCase().includes(searchQuery) ||
-          agent.subdomain.toLowerCase().includes(searchQuery)
+        agent => {
+          // Check title and description
+          const titleMatch = agent.title.toLowerCase().includes(searchQuery);
+          const descriptionMatch = agent.description.toLowerCase().includes(searchQuery);
+          
+          // Check domains
+          const domains = agent.domains || [];
+          const domainMatch = domains.some(domain => domain.toLowerCase().includes(searchQuery));
+          
+          // Check subdomains
+          const subdomains = agent.subdomains || [];
+          const subdomainMatch = subdomains.some(subdomain => subdomain.toLowerCase().includes(searchQuery));
+          
+          return titleMatch || descriptionMatch || domainMatch || subdomainMatch;
+        }
       );
     }
     
     // Apply business capability filters
     if (currentFilters.l1Capability !== 'all') {
-      result = result.filter(agent => agent.domain === currentFilters.l1Capability);
+      result = result.filter(agent => {
+        const domains = agent.domains || [];
+        return domains.includes(currentFilters.l1Capability);
+      });
     }
     
     // Apply subcapability filter (regardless of L1 selection)
     if (currentFilters.l2Capability !== 'all') {
-      result = result.filter(agent => agent.subdomain === currentFilters.l2Capability);
+      result = result.filter(agent => {
+        const subdomains = agent.subdomains || [];
+        return subdomains.includes(currentFilters.l2Capability);
+      });
     }
     
     // Apply trial filter

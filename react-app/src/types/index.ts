@@ -1,8 +1,8 @@
 export interface Agent {
   id: string;
   title: string;
-  domain: string;
-  subdomain: string;
+  domains: string[];
+  subdomains: string[];
   description: string;
   rating?: number; // Made optional since it's calculated from reviews
   comments?: number; // Made optional since it's calculated from reviews

@@ -9,7 +9,12 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
   const totalAgents = agents.length;
   
   // Get unique domains
-  const uniqueDomains = [...new Set(agents.map(agent => agent.domain))].length;
+  const allDomains = new Set<string>();
+  agents.forEach(agent => {
+    const domains = agent.domains || [];
+    domains.forEach(domain => allDomains.add(domain));
+  });
+  const uniqueDomains = allDomains.size;
   
   // Calculate average rating
   const avgRating = agents.length > 0 
@@ -25,11 +30,10 @@ const Stats: React.FC<StatsProps> = ({ agents }) => {
   // Count unique subcapabilities that appear in the filtered agents
   const uniqueCapabilities = new Set<string>();
   
-  // For each agent, add its subdomain to the set of unique capabilities
+  // For each agent, add its subdomains to the set of unique capabilities
   agents.forEach(agent => {
-    if (agent.subdomain) {
-      uniqueCapabilities.add(agent.subdomain);
-    }
+    const subdomains = agent.subdomains || [];
+    subdomains.forEach(subdomain => uniqueCapabilities.add(subdomain));
   });
   
   // Count of unique capabilities in the currently filtered agents
