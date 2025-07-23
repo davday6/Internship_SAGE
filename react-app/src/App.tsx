@@ -12,6 +12,7 @@ import ContactForm from './components/ContactForm'
 import ChatWidget from './components/ChatWidget'
 import ViewToggle from './components/ViewToggle'
 import AuthModal from './components/AuthModal'
+import Footer from './components/Footer'
 import { fetchAgentsData, deriveBusinessCapabilities } from './data/agentData'
 import { AgentService } from './services/agentService'
 import type { Agent, FilterOptions, Review, BusinessCapabilities } from './types'
@@ -320,18 +321,7 @@ function App() {
         onClose={() => setIsAuthModalOpen(false)} 
       />
       
-      <footer className="page-footer">
-        <div className="footer-content">
-          <div className="footer-links">
-            <a href="#" className="footer-link">Privacy Policy</a>
-            <a href="#" className="footer-link">Terms of Service</a>
-            <a href="#" className="footer-link">About</a>
-          </div>
-          <div className="footer-copyright">
-            &copy; {new Date().getFullYear()} Sogeti. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer />
       
       <ChatWidget />
     </>
